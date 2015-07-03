@@ -14,6 +14,9 @@
 /eclipse/options.txt
 /eclipse/saves
 /eclipse/usernamecache.json
+/eclipse/.metadata
+/eclipse/.recommenders
+/eclipse/*.log
 gradlew*
 *.*~
 *.txt
