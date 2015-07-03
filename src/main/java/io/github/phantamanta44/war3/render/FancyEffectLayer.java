@@ -8,6 +8,7 @@ import java.util.Random;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.entity.RenderPlayer;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -19,6 +20,11 @@ import org.lwjgl.opengl.GL11;
 public class FancyEffectLayer implements LayerRenderer {
 	
 	private static final ResourceLocation horn = new ResourceLocation("war3", "textures/misc/horn.png");
+	private final RenderPlayer rend;
+	
+	public FancyEffectLayer(RenderPlayer renderPlayer) {
+		rend = renderPlayer;
+	}
 
 	public void doRenderLayer(EntityPlayer player, float f, float f1, float renderTick, float f2, float f3, float f4, float f5) {
 		if (player.getUniqueID().toString().equals("5b435dcb-1d26-4324-85a9-b7c8be22b6ea"))
@@ -60,7 +66,7 @@ public class FancyEffectLayer implements LayerRenderer {
 		GL11.glScalef(0.75F, 0.75F, 0.75F);
 		GL11.glRotatef(90F, 0F, 1F, 0F);
 		GL11.glTranslatef(-0.3F, 0.1F, 0.55F);
-		Minecraft.getMinecraft().renderEngine.bindTexture(horn);
+		rend.bindTexture(horn);
 		renderItemIn2D(Tessellator.getInstance(), 1, 0, 0, 1, 16, 16, 1F / 16F);
 		GL11.glPopMatrix();
 	}

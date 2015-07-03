@@ -15,20 +15,17 @@ import io.github.phantamanta44.war3.render.ItemRenderInterceptor;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStreamReader;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.network.NetHandlerPlayClient;
+import net.minecraft.client.renderer.entity.RenderHackThing;
+import net.minecraft.client.renderer.entity.RenderHackThing.DummyHackPlayer;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.entity.RenderPlayer;
-import net.minecraft.client.renderer.entity.RendererLivingEntity;
-import net.minecraft.client.renderer.entity.layers.LayerRenderer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -90,23 +87,11 @@ public class War3 {
         }
         
         public static void registerRenderers(Minecraft mc) {
-        	FancyEffectLayer layer = new FancyEffectLayer();
         	RenderManager man = mc.getRenderManager();
-        	try {
-        		Field skinMapField = man.getClass().getDeclaredField("skinMap");
-        		skinMapField.setAccessible(true);
-        		Map skinMap = (Map)skinMapField.get(man);
-        		RenderPlayer def = (RenderPlayer)skinMap.get("default");
-        		RenderPlayer slim = (RenderPlayer)skinMap.get("slim");
-        		Method layerMeth = RendererLivingEntity.class.getDeclaredMethod("addLayer", LayerRenderer.class);
-        		layerMeth.setAccessible(true);
-        		layerMeth.invoke(def, layer);
-        		layerMeth.invoke(slim, layer);
-        	}
-        	catch (Exception ex) {
-        		System.out.println("[War3] Error while reflecting upon skinMap:");
-        		ex.printStackTrace();
-        	}
+        	RenderPlayer def= (RenderPlayer)man.getEntityRenderObject(new DummyHackPlayer("default"));
+    		RenderPlayer slim = (RenderPlayer)man.getEntityRenderObject(new DummyHackPlayer("slim"));
+    		RenderHackThing.addLayer(def, new FancyEffectLayer(def));
+    		RenderHackThing.addLayer(slim, new FancyEffectLayer(slim));
         }
         
         public static void registerEvents(Minecraft mc) {
