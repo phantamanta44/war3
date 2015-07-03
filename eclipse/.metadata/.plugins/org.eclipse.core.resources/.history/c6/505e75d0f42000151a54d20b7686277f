@@ -1,0 +1,39 @@
+package io.github.phantamanta44.war3.handler;
+
+import io.github.phantamanta44.war3.gui.ScopeHandler;
+import io.github.phantamanta44.war3.render.fx.FXSparkle;
+import net.minecraft.client.Minecraft;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.Vec3;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
+
+public class VinylScratchHandler {
+
+	private Minecraft mc;
+	
+	public VinylScratchHandler(Minecraft minecraft) {
+		mc = minecraft;
+	}
+	
+	@SubscribeEvent
+	public void onPlayerTick(TickEvent.PlayerTickEvent event) {
+		if (mc.gameSettings.keyBindUseItem.isKeyDown() && mc.thePlayer.inventory.getCurrentItem() != null) {
+			System.out.println("hi");
+			ItemStack is = mc.thePlayer.inventory.getCurrentItem();
+			Item i = is.getItem();
+			if (!ScopeHandler.isScopable(Item.getIdFromItem(i)))
+				return;
+			if (is.getDisplayName().toLowerCase().contains("reload"))
+				return;
+			renderBeam();
+		}
+	}
+	
+	private void renderBeam() {
+		Vec3 v = mc.thePlayer.getLookVec();
+		FXSparkle sparkle = new FXSparkle(mc.theWorld, mc.thePlayer.posX, mc.thePlayer.posY, mc.thePlayer.posZ, 3.0F, 0.08F, 0.3F, 0.9F, 1);
+	}
+	
+}

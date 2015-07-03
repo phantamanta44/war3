@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<qualifiedTypeNameHistroy>
+<fullyQualifiedTypeName name="net.minecraftforge.fml.common.eventhandler.EventPriority"/>
+<fullyQualifiedTypeName name="net.minecraftforge.fml.common.eventhandler.SubscribeEvent"/>
+<fullyQualifiedTypeName name="scala.actors.threadpool.Arrays"/>
+<fullyQualifiedTypeName name="java.util.Set"/>
+<fullyQualifiedTypeName name="java.util.HashSet"/>
+<fullyQualifiedTypeName name="net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType"/>
+<fullyQualifiedTypeName name="net.minecraftforge.client.event.ClientChatReceivedEvent"/>
+<fullyQualifiedTypeName name="net.minecraft.util.IChatComponent"/>
+<fullyQualifiedTypeName name="java.util.Arrays"/>
+<fullyQualifiedTypeName name="net.minecraft.util.ChatStyle"/>
+<fullyQualifiedTypeName name="com.mojang.realmsclient.gui.ChatFormatting"/>
+<fullyQualifiedTypeName name="net.minecraftforge.common.MinecraftForge"/>
+<fullyQualifiedTypeName name="net.minecraft.client.renderer.Tessellator"/>
+<fullyQualifiedTypeName name="net.minecraft.item.Item"/>
+<fullyQualifiedTypeName name="net.minecraftforge.client.event.RenderHandEvent"/>
+<fullyQualifiedTypeName name="net.minecraft.potion.Potion"/>
+<fullyQualifiedTypeName name="com.typesafe.config.Config"/>
+<fullyQualifiedTypeName name="sun.security.krb5.Config"/>
+<fullyQualifiedTypeName name="jdk.nashorn.internal.runtime.regexp.joni.Config"/>
+<fullyQualifiedTypeName name="net.minecraftforge.common.config.ConfigElement"/>
+<fullyQualifiedTypeName name="java.io.File"/>
+<fullyQualifiedTypeName name="net.minecraftforge.fml.common.FMLCommonHandler"/>
+<fullyQualifiedTypeName name="io.github.phantamanta44.war3.War3"/>
+<fullyQualifiedTypeName name="net.minecraftforge.common.config.Configuration"/>
+<fullyQualifiedTypeName name="net.minecraft.client.audio.SoundManager"/>
+<fullyQualifiedTypeName name="io.github.phantamanta44.war3.SoundType"/>
+<fullyQualifiedTypeName name="net.minecraft.util.EnumChatFormatting"/>
+<fullyQualifiedTypeName name="net.minecraftforge.client.event.sound.PlaySoundEvent"/>
+<fullyQualifiedTypeName name="net.minecraftforge.client.MinecraftForgeClient"/>
+<fullyQualifiedTypeName name="net.minecraft.item.ItemStack"/>
+<fullyQualifiedTypeName name="io.github.phantamanta44.war3.config.Config"/>
+<fullyQualifiedTypeName name="net.minecraftforge.fml.common.eventhandler.Event.Result"/>
+<fullyQualifiedTypeName name="net.minecraftforge.client.event.RenderGameOverlayEvent.Pre"/>
+<fullyQualifiedTypeName name="net.minecraftforge.client.event.RenderGameOverlayEvent.Chat"/>
+<fullyQualifiedTypeName name="org.lwjgl.opengl.GL11"/>
+<fullyQualifiedTypeName name="net.minecraft.client.renderer.GlStateManager"/>
+<fullyQualifiedTypeName name="net.minecraft.init.Items"/>
+</qualifiedTypeNameHistroy>

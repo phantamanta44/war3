@@ -1,0 +1,31 @@
+package io.github.phantamanta44.war3.config;
+
+import net.minecraftforge.common.config.Configuration;
+
+import java.io.File;
+
+public class Config {
+	
+    public static Configuration config;
+
+    public static boolean showHotbar;
+    public static boolean useModels;
+    public static boolean doKickback;
+
+    public static void init(File file) {
+        config = new Configuration(file);
+        syncConfig();
+    }
+
+    public static void syncConfig() {
+    	
+        showHotbar = config.get(Configuration.CATEGORY_GENERAL, "renderHotbar", false, "Show hotbar?").getBoolean();
+        useModels = config.get(Configuration.CATEGORY_GENERAL, "renderModels", true, "Render models?").getBoolean();
+        doKickback = config.get(Configuration.CATEGORY_GENERAL, "doKickback", false, "Gun Kickback?").getBoolean();
+        
+        if (config.hasChanged())
+            config.save();
+        
+    }
+    
+}

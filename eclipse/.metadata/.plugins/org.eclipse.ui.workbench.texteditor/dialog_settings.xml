@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
+		<item value="false" key="isRegEx"/>
+		<item value="clip" key="selection"/>
+		<item value="false" key="casesensitive"/>
+		<item value="false" key="incremental"/>
+		<item value="true" key="wrap"/>
+		<item value="false" key="wholeword"/>
+		<list key="findhistory">
+			<item value="pump"/>
+			<item value=" &amp;&amp; mc.gameSettings.keyBindUseItem.isKeyDown()"/>
+			<item value="isPressed"/>
+			<item value="KickbackHandler."/>
+			<item value="bowl"/>
+			<item value="bFull3d = "/>
+			<item value="isFull3D"/>
+			<item value="isFull3d"/>
+		</list>
+		<list key="replacehistory">
+			<item value="clip"/>
+			<item value=""/>
+			<item value="isKeyDown"/>
+			<item value=".inventory.getCurrentItem()"/>
+			<item value="smg"/>
+			<item value="pistol"/>
+			<item value="shovel"/>
+			<item value="shotgun"/>
+		</list>
+	</section>
+	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">
+		<item value="297" key="DIALOG_WIDTH"/>
+		<item value="1|Cantarell|11.0|0|GTK|1|" key="DIALOG_FONT_NAME"/>
+		<item value="561" key="DIALOG_HEIGHT"/>
+		<item value="656" key="DIALOG_X_ORIGIN"/>
+		<item value="126" key="DIALOG_Y_ORIGIN"/>
+	</section>
+</section>

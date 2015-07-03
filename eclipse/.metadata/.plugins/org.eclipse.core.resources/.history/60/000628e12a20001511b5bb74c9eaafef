@@ -1,0 +1,28 @@
+package io.github.phantamanta44.war3.handler;
+
+import net.minecraft.client.Minecraft;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
+
+public class KickbackHandler {
+
+	private static double activeOffset = 0, passiveOffset = 0;
+	private Minecraft mc;
+	
+	public KickbackHandler(Minecraft minecraft) {
+		mc = minecraft;
+	}
+	
+	@SubscribeEvent
+	public void onPlayerTick(TickEvent.PlayerTickEvent event) {
+		if (activeOffset > 0) {
+			activeOffset /= 2;
+			mc.thePlayer.rotationPitch += activeOffset / 2;
+		}
+	}
+	
+	public static void kickBack(double amt) {
+		activeOffset = Math.min(activeOffset + amt, 90);
+	}
+	
+}

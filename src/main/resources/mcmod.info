@@ -1,0 +1,16 @@
+[
+{
+  "modid": "war3",
+  "name": "§3MC-War Client",
+  "description": "MC-War Client 3rd Generation",
+  "version": "Prerelease",
+  "mcversion": "1.8",
+  "url": "http://phantamanta44.github.io",
+  "updateUrl": "",
+  "authorList": ["Phanta"],
+  "credits": "Some various people for textures.",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]

@@ -1,0 +1,168 @@
+package io.github.phantamanta44.war3;
+
+import io.github.phantamanta44.war3.config.Config;
+import io.github.phantamanta44.war3.config.ConfigEventListener;
+import io.github.phantamanta44.war3.gui.GuiWarOverlay;
+import io.github.phantamanta44.war3.handler.KickbackHandler;
+import io.github.phantamanta44.war3.handler.SoundInterceptor;
+import io.github.phantamanta44.war3.handler.WarChatHandler;
+import io.github.phantamanta44.war3.render.ItemRenderInterceptor;
+import io.github.phantamanta44.war3.render.PumpedItemRenderer;
+
+import java.io.File;
+import java.util.Collection;
+
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.network.NetHandlerPlayClient;
+import net.minecraft.init.Items;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.Mod.EventHandler;
+import net.minecraftforge.fml.common.Mod.Instance;
+import net.minecraftforge.fml.common.SidedProxy;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+
+@Mod(modid="war3", name="MC-War Client", version="0.0.3", useMetadata=true, guiFactory="io.github.phantamanta44.war3.config.ConfigGuiFactory")
+public class War3 {
+	
+        @Instance("war3")
+        public static War3 instance;
+        
+        @SidedProxy(clientSide="io.github.phantamanta44.war3.CommonProxy", serverSide="io.github.phantamanta44.war3.CommonProxy")
+        public static CommonProxy proxy;
+        
+        public static String cachedTeam = "blue";
+        
+        @EventHandler
+        public void preInit(FMLPreInitializationEvent event) {
+        	Config.init(new File("./config/war3/config.cfg"));
+        	FMLCommonHandler.instance().bus().register(new ConfigEventListener());
+        }
+        
+        @EventHandler
+        public void load(FMLInitializationEvent event) {
+                proxy.registerRenderers();
+        }
+        
+        @EventHandler
+        public void postInit(FMLPostInitializationEvent event) {
+        	Minecraft mc = Minecraft.getMinecraft();
+        	registerEvents(mc);
+        }
+        
+        public static void registerEvents(Minecraft mc) {
+        	MinecraftForge.EVENT_BUS.register(new GuiWarOverlay(mc));
+        	MinecraftForge.EVENT_BUS.register(new WarChatHandler(mc));
+        	MinecraftForge.EVENT_BUS.register(new SoundInterceptor());
+        	MinecraftForge.EVENT_BUS.register(new ItemRenderInterceptor(mc));
+        	FMLCommonHandler.instance().bus().register(new KickbackHandler(mc));
+        	ItemRenderInterceptor.registerRenderers();
+        }
+        
+        public static Collection getClientsidePlayerList() {
+        	NetHandlerPlayClient nethandlerplayclient = Minecraft.getMinecraft().thePlayer.sendQueue;
+        	return nethandlerplayclient.func_175106_d();
+        }
+        
+        public static String secondsToTime(int i, String seperatingChar) {
+    		int seconds = i % 60;
+    		int minutes = (i - seconds) / 60;
+    		String secondsParsed = "" + seconds;
+    		secondsParsed = (secondsParsed.length() == 1) ? (secondsParsed = "0" + secondsParsed) : secondsParsed;
+    		return "" + minutes + seperatingChar + secondsParsed;
+    	}
+    	
+    	public static String toIntString(String i) {
+    		if (i.contains(".")) {
+    			return i.split("\\.")[0] + "%";
+    		}
+    		return i + "%";
+    	}
+    	
+    	public static String getTeam(Minecraft mc) {
+    		if (mc.thePlayer.inventory.armorItemInSlot(3) != null) {
+    			ItemStack helmItem = mc.thePlayer.inventory.armorItemInSlot(3);
+    			if (Item.getIdFromItem(helmItem.getItem()) == 397) {
+    				cachedTeam = "red";
+    				return "red";
+    			}
+    			else if (Item.getIdFromItem(helmItem.getItem()) == 298) {
+    				NBTTagCompound nbt = helmItem.getTagCompound();
+    				int colorInt = nbt.getCompoundTag("display").getInteger("color");
+    				if (colorInt == 16711680) {
+    					cachedTeam = "red";
+    					return "red";
+    				}
+    				else if (colorInt == 255) {
+    					cachedTeam = "blue";
+    					return "blue";
+    				}
+    				else {
+    					return "ffa";
+    				}
+    			}
+    		}
+    		return "unknown";
+    	}
+    	
+    	public static int getHelmetColor(Minecraft mc) {
+    		if (mc.thePlayer.inventory.armorItemInSlot(3) != null) {
+    			ItemStack helmItem = mc.thePlayer.inventory.armorItemInSlot(3);
+    			if (Item.getIdFromItem(helmItem.getItem()) == 298) {
+    				NBTTagCompound nbt = helmItem.getTagCompound();
+    				int colorInt = nbt.getCompoundTag("display").getInteger("color");
+    				return colorInt;
+    			}
+    		}
+    		return 1337;
+    	}
+    	
+    	public static void tryKickback(String path, Minecraft mc) {
+    		if (!Config.doKickback)
+    			return;
+    		Item i;
+    		try {
+    			i = mc.thePlayer.inventory.getCurrentItem().getItem();
+    		}
+    		catch (NullPointerException ex) {
+    			return;
+    		}
+    		if (!mc.gameSettings.keyBindUseItem.isPressed()
+    				|| mc.thePlayer.inventory.getCurrentItem().getDisplayName().contains("Reload")
+    				|| mc.thePlayer.inventory.getCurrentItem().getDisplayName().contains("0 | 0"))
+    			return;
+    		if (path.contains("tile.piston")) {
+    			if (i.getUnlocalizedName().contains("pickaxe") || i == Items.stick || i == Items.brick) {
+					if (path.equals("tile.piston.out"))
+						PumpedItemRenderer.setPumping(true);
+					else
+						PumpedItemRenderer.setPumping(false);
+    			}
+			}
+			if (path.equals("mob.zombie.metal")) {
+				KickbackHandler.kickBack(18.5D);
+			}
+			if (path.equals("mob.skeleton.hurt")) {
+				KickbackHandler.kickBack(2.0D);
+			}
+			if (path.equals("note.snare")) {
+				KickbackHandler.kickBack(4.6D);
+			}
+			if (path.equals("mob.ghast.fireball")) {
+				if (i.getUnlocalizedName().contains("pickaxe")
+						|| i == Items.stick || i == Items.brick)
+					KickbackHandler.kickBack(30.0D);
+			}
+			if (path.equals("game.tnt.primed") || path.equals("creeper.primed"))
+				KickbackHandler.kickBack(24.0D);
+			if (path.equals("mob.irongolem.hit"))
+				KickbackHandler.kickBack(24.9D);
+    	}
+    	
+}

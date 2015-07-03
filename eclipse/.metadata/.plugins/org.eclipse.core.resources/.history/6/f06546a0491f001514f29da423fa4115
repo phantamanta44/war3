@@ -1,0 +1,34 @@
+package io.github.phantamanta44.war3.render;
+
+import io.github.phantamanta44.war3.config.Config;
+import net.minecraft.client.Minecraft;
+import net.minecraftforge.client.IItemRenderer;
+import net.minecraftforge.client.IItemRenderer.ItemRenderType;
+import net.minecraftforge.client.MinecraftForgeClient;
+import net.minecraftforge.client.event.RenderHandEvent;
+import net.minecraftforge.fml.common.eventhandler.EventPriority;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+
+public class ItemRenderInterceptor {
+
+private Minecraft mc;
+	
+	public ItemRenderInterceptor(Minecraft minecraft) {
+		mc = minecraft;
+	}
+	
+	@SubscribeEvent(priority = EventPriority.NORMAL)
+	public void onHandRender(RenderHandEvent event) {
+		if (!Config.useModels)
+			return;
+		if (Minecraft.getMinecraft().gameSettings.thirdPersonView == 0 && this.mc.thePlayer.getCurrentEquippedItem() != null && this.mc.thePlayer.getCurrentEquippedItem().getItem() != null) {
+			IItemRenderer renderer = MinecraftForgeClient.getItemRenderer(this.mc.thePlayer.getCurrentEquippedItem(), ItemRenderType.EQUIPPED_FIRST_PERSON);
+			if (renderer != null) {
+				renderer.renderItem(ItemRenderType.EQUIPPED_FIRST_PERSON, this.mc.thePlayer.getCurrentEquippedItem());
+				if (event.isCancelable())
+					event.setCanceled(true);
+			}
+		}
+	}
+	
+}

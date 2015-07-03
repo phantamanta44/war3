@@ -1,0 +1,35 @@
+package io.github.phantamanta44.war3.config;
+
+import net.minecraftforge.common.config.Configuration;
+
+import java.io.File;
+
+public class Config {
+	
+    public static Configuration config;
+
+    public static boolean showHotbar;
+    public static boolean useModels;
+    public static boolean doKickback;
+    public static boolean beamMode;
+    public static float beamSize;
+
+    public static void init(File file) {
+        config = new Configuration(file);
+        syncConfig();
+    }
+
+    public static void syncConfig() {
+    	
+        showHotbar = config.getBoolean(Configuration.CATEGORY_GENERAL, "renderHotbar", false, "Show hotbar?");
+        useModels = config.getBoolean(Configuration.CATEGORY_GENERAL, "renderModels", true, "Render models?");
+        doKickback = config.getBoolean(Configuration.CATEGORY_GENERAL, "doKickback", false, "Camera recoil?");
+        beamMode = config.getBoolean(Configuration.CATEGORY_GENERAL, "beamMode", false, "Bass cannon?");
+        beamSize = config.getFloat("beamSize", Configuration.CATEGORY_GENERAL, 1.2F, 0.4F, 3.0F, "Bass cannon size");
+        
+        if (config.hasChanged())
+            config.save();
+        
+    }
+    
+}

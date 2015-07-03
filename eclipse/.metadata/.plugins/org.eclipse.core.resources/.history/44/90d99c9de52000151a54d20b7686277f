@@ -1,0 +1,13 @@
+package io.github.phantamanta44.war3.handler;
+
+import net.minecraft.client.Minecraft;
+
+public class VinylScratchHandler {
+
+	private Minecraft mc;
+	
+	public VinylScratchHandler(Minecraft minecraft) {
+		mc = minecraft;
+	}
+	
+}

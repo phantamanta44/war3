@@ -1,0 +1,29 @@
+package io.github.phantamanta44.war3.config;
+
+import net.minecraftforge.common.config.Configuration;
+
+import java.io.File;
+
+public class Config {
+	
+    public static Configuration config;
+
+    public static boolean useScopes;
+    public static boolean useHip;
+
+    public static void init(File file) {
+        config = new Configuration(file);
+        syncConfig();
+    }
+
+    public static void syncConfig() {
+    	
+    	useScopes = config.get(Configuration.CATEGORY_GENERAL, "renderScope", true, "Render scope textures?").getBoolean();
+        useHip = config.get(Configuration.CATEGORY_GENERAL, "renderHip", true, "Render hipfire textures?").getBoolean();
+        
+        if (config.hasChanged())
+            config.save();
+        
+    }
+    
+}

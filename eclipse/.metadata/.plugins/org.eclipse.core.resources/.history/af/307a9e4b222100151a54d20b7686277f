@@ -1,0 +1,9 @@
+package io.github.phantamanta44.war3.render;
+
+import net.minecraft.util.ResourceLocation;
+
+public class HornLayerRenderer {
+	
+	private static final ResourceLocation horn = new ResourceLocation("war3", "textures/misc/horn.png");
+	
+}

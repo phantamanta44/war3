@@ -1,0 +1,208 @@
+{
+  "bf.ctfr.cap": {
+    "category": "master",
+    "sounds": [
+      {
+        "name": "ctf/ru/cap1",
+        "stream": true
+      },
+      {
+        "name": "ctf/ru/cap2",
+        "stream": true
+      },
+      {
+        "name": "ctf/ru/cap3",
+        "stream": true
+      },
+      {
+        "name": "ctf/ru/cap4",
+        "stream": true
+      },
+      {
+        "name": "ctf/ru/cap5",
+        "stream": true
+      }
+    ]
+  },
+  "bf.ctfr.capenemy": {
+    "category": "master",
+    "sounds": [
+      {
+        "name": "ctf/ru/capenemy1",
+        "stream": true
+      },
+      {
+        "name": "ctf/ru/capenemy2",
+        "stream": true
+      },
+      {
+        "name": "ctf/ru/capenemy3",
+        "stream": true
+      },
+      {
+        "name": "ctf/ru/capenemy4",
+        "stream": true
+      },
+      {
+        "name": "ctf/ru/capenemy5",
+        "stream": true
+      }
+    ]
+  },
+  "bf.ctfr.drop": {
+    "category": "master",
+    "sounds": [
+      {
+        "name": "ctf/ru/drop1",
+        "stream": true
+      },
+      {
+        "name": "ctf/ru/drop2",
+        "stream": true
+      },
+      {
+        "name": "ctf/ru/drop3",
+        "stream": true
+      },
+      {
+        "name": "ctf/ru/drop4",
+        "stream": true
+      },
+      {
+        "name": "ctf/ru/drop5",
+        "stream": true
+      }
+    ]
+  },
+  "bf.ctfu.cap": {
+    "category": "master",
+    "sounds": [
+      {
+        "name": "ctf/us/cap1",
+        "stream": true
+      },
+      {
+        "name": "ctf/us/cap2",
+        "stream": true
+      },
+      {
+        "name": "ctf/us/cap3",
+        "stream": true
+      },
+      {
+        "name": "ctf/us/cap4",
+        "stream": true
+      },
+      {
+        "name": "ctf/us/cap5",
+        "stream": true
+      }
+    ]
+  },
+  "bf.ctfu.capenemy": {
+    "category": "master",
+    "sounds": [
+      {
+        "name": "ctf/us/capenemy1",
+        "stream": true
+      },
+      {
+        "name": "ctf/us/capenemy2",
+        "stream": true
+      },
+      {
+        "name": "ctf/us/capenemy3",
+        "stream": true
+      },
+      {
+        "name": "ctf/us/capenemy4",
+        "stream": true
+      },
+      {
+        "name": "ctf/us/capenemy5",
+        "stream": true
+      }
+    ]
+  },
+  "bf.ctfu.drop": {
+    "category": "master",
+    "sounds": [
+      {
+        "name": "ctf/us/drop1",
+        "stream": true
+      },
+      {
+        "name": "ctf/us/drop2",
+        "stream": true
+      },
+      {
+        "name": "ctf/us/drop3",
+        "stream": true
+      },
+      {
+        "name": "ctf/us/drop4",
+        "stream": true
+      },
+      {
+        "name": "ctf/us/drop5",
+        "stream": true
+      }
+    ]
+  },
+  "bf.resp.ru": {
+    "category": "master",
+    "sounds": [
+      {
+        "name": "ru/resp1"
+      },
+      {
+        "name": "ru/resp2"
+      },
+      {
+        "name": "ru/resp3"
+      },
+      {
+        "name": "ru/resp4"
+      },
+      {
+        "name": "ru/resp5"
+      }
+    ]
+  },
+  "bf.resp.us": {
+    "category": "master",
+    "sounds": [
+      {
+        "name": "us/resp1"
+      },
+      {
+        "name": "us/resp2"
+      },
+      {
+        "name": "us/resp3"
+      },
+      {
+        "name": "us/resp4"
+      },
+      {
+        "name": "us/resp5"
+      }
+    ]
+  },
+  "bf.hud.notify": {
+    "category": "master",
+    "sounds": [
+      {
+        "name": "misc/notify"
+      }
+    ]
+  },
+  "bf.hud.kill": {
+    "category": "master",
+    "sounds": [
+      {
+        "name": "misc/kill"
+      }
+    ]
+  }
+}

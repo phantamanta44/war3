@@ -1,0 +1,55 @@
+package io.github.phantamanta44.war3.handler;
+
+import io.github.phantamanta44.war3.War3;
+import io.github.phantamanta44.war3.render.ShaderHelper;
+import io.github.phantamanta44.war3.render.fx.FXSparkle;
+import io.github.phantamanta44.war3.render.fx.ParticleRenderDispatcher;
+
+import java.util.Random;
+
+import net.minecraft.client.Minecraft;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.Vec3;
+import net.minecraftforge.client.event.RenderPlayerEvent;
+import net.minecraftforge.client.event.RenderWorldEvent;
+import net.minecraftforge.client.event.RenderWorldLastEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+
+public class WorldRenderHandler {
+	
+	private Minecraft mc;
+	
+	public WorldRenderHandler(Minecraft minecraft) {
+		mc = minecraft;
+	}
+	
+	@SubscribeEvent
+	public void onRenderPlayer(RenderPlayerEvent.Post event) {
+		if (War3.awesomePeople.contains(event.entityPlayer.getUniqueID().toString())) {
+			Vec3 pos = event.entity.getPositionVector();
+			Random rand = mc.theWorld.rand;
+			int x = rand.nextInt(8);
+			if (x == 0) {
+				double a = (VazkiiTickHandler.ticksInGame % 180) * 2 * (Math.PI / 180);
+				FXSparkle spark = new FXSparkle(mc.theWorld, pos.xCoord + rand.nextFloat() - 0.5, pos.yCoord + rand.nextFloat() * 2, pos.zCoord + rand.nextFloat() - 0.5,
+						rand.nextFloat() + 1, (float)Math.sin(a), (float)Math.sin(a + (0.6 * Math.PI)), (float)Math.sin(a + (1.2 * Math.PI)), 5);
+				mc.effectRenderer.addEffect(spark);
+			}
+		}
+		
+	}
+	
+	@SubscribeEvent
+	public void onRenderWorld(RenderWorldEvent event) {
+		if (event instanceof RenderWorldEvent.Pre)
+			ShaderHelper.useShader(ShaderHelper.filmGrain);
+		else if (event instanceof RenderWorldEvent.Post)
+			ShaderHelper.releaseShader();
+	}
+	
+	@SubscribeEvent
+	public void onRenderWorldLast(RenderWorldLastEvent event) {
+		ParticleRenderDispatcher.dispatch();
+	}
+	
+}

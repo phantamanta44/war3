@@ -1,0 +1,24 @@
+package io.github.phantamanta44.war3.handler;
+
+import net.minecraft.client.Minecraft;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
+
+public class KickbackHandler {
+
+	private Minecraft mc;
+	
+	public KickbackHandler(Minecraft minecraft) {
+		mc = minecraft;
+	}
+	
+	@SubscribeEvent
+	public void onPlayerTick(TickEvent.PlayerTickEvent event) {
+		
+	}
+	
+	public static void kickBack(double amt) {
+		
+	}
+	
+}
