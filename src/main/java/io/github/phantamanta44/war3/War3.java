@@ -44,6 +44,8 @@ public class War3 {
 	
 		public static final String awesomePeopleUrl = "https://gist.githubusercontent.com/phantamanta44/048cb544cb2fe8c338e5/raw/awesomepeople.txt";
 		public static List<String> awesomePeople;
+		public static RenderPlayer defRP;
+		public static RenderPlayer slimRP;
 	
         @Instance("war3")
         public static War3 instance;
@@ -88,10 +90,10 @@ public class War3 {
         
         public static void registerRenderers(Minecraft mc) {
         	RenderManager man = mc.getRenderManager();
-        	RenderPlayer def= (RenderPlayer)man.getEntityRenderObject(new DummyHackPlayer("default"));
-    		RenderPlayer slim = (RenderPlayer)man.getEntityRenderObject(new DummyHackPlayer("slim"));
-    		RenderHackThing.addLayer(def, new FancyEffectLayer(def));
-    		RenderHackThing.addLayer(slim, new FancyEffectLayer(slim));
+        	defRP = (RenderPlayer)man.getEntityRenderObject(new DummyHackPlayer("default"));
+    		slimRP = (RenderPlayer)man.getEntityRenderObject(new DummyHackPlayer("slim"));
+    		RenderHackThing.addLayer(defRP, new FancyEffectLayer(defRP));
+    		RenderHackThing.addLayer(slimRP, new FancyEffectLayer(slimRP));
         }
         
         public static void registerEvents(Minecraft mc) {
