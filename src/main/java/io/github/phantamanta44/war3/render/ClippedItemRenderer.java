@@ -61,10 +61,12 @@ public class ClippedItemRenderer extends ObjModelItemRenderer {
 		GL11.glTranslated(xOffset, 0.0, zOffset);
 		GL11.glRotated(-facing + 90, 0.0, 1.0, 0.0);
 		GL11.glRotated(pitch, 1.0, 0.0, 0.0);
+		GL11.glRotated(clip, 1.0, 0.0, -1.0);
 		GL11.glScaled(0.04 * scaleMult, 0.04 * scaleMult, 0.04 * scaleMult);
 		mc.renderEngine.bindTexture(texture);
 		model.renderAllExcept(clipName);
 		
+		GL11.glRotated(-clip, 1.0, 0.0, -1.0);
 		GL11.glTranslated(0.0, clip, 0.0);
 		if (clipTar == 0 || clip != clipTar)
 			model.renderOnly(clipName);

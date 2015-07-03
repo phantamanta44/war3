@@ -2,6 +2,7 @@ package io.github.phantamanta44.war3.gui;
 
 import io.github.phantamanta44.war3.War3;
 import io.github.phantamanta44.war3.config.Config;
+import io.github.phantamanta44.war3.gui.ScopeHandler.Guns;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -10,13 +11,18 @@ import java.util.Set;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;
+import net.minecraft.client.gui.GuiIngame;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
+import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.FoodStats;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
@@ -33,6 +39,8 @@ public class GuiWarOverlay extends Gui {
 			ElementType.ARMOR, ElementType.FOOD, ElementType.HEALTH, ElementType.EXPERIENCE, ElementType.BOSSHEALTH}));
 	private static final ResourceLocation bloodSplat = new ResourceLocation("war3", "textures/gui/bloodSplat.png");
 	private static final ResourceLocation mainOverlay = new ResourceLocation("war3", "textures/gui/overlay.png");
+	private static final ResourceLocation ret = new ResourceLocation("war3", "textures/gui/icons.png");
+	public static int shootTicks = 0;
 	
     private int sprintBarAnimStatus;
 	
@@ -44,6 +52,9 @@ public class GuiWarOverlay extends Gui {
 	public void eventHandler(RenderGameOverlayEvent event) {
 		if (!event.isCancelable())
 			return;
+		
+		if (shootTicks > 0)
+			shootTicks--;
 		
 		ScaledResolution sc = event.resolution;
 		int xBounds = sc.getScaledWidth();
@@ -58,10 +69,43 @@ public class GuiWarOverlay extends Gui {
 		}
 		
 		if (mc.thePlayer.inventory.getCurrentItem() != null) {
-			if (event.type == ElementType.CROSSHAIRS && ScopeHandler.isScopable(Item.getIdFromItem(mc.thePlayer.inventory.getCurrentItem().getItem()))) {
-				if (this.mc.thePlayer.isPotionActive(Potion.moveSlowdown) && Config.useModels)
-					event.setCanceled(true);
+			if (event.type == ElementType.CROSSHAIRS) {
+				if (ScopeHandler.isScopable(Item.getIdFromItem(mc.thePlayer.inventory.getCurrentItem().getItem()))) {
+					if (this.mc.thePlayer.isPotionActive(Potion.moveSlowdown) && Config.useModels)
+						event.setCanceled(true);
+				}
+				if (!event.isCanceled()) {
+					GL11.glPushMatrix();
+					if (Config.varReticle) {
+						float scalingFac = getScalingFac(mc);
+						float varX = xBounds * scalingFac, varY = yBounds * scalingFac;
+						float eX = (varX - xBounds) / 2, eY = (varY - yBounds) / 2;
+						GL11.glTranslatef(-eX, -eY, 0F);
+						GL11.glScalef(scalingFac, scalingFac, scalingFac);
+					}
+					if (Config.altReticle) {
+						Reticle r;
+						if ((r = getReticleCoords(mc.thePlayer.inventory.getCurrentItem().getItem())) != Reticle.VANILLA) {
+							event.setCanceled(true);
+							GL11.glEnable(GL11.GL_BLEND);
+							OpenGlHelper.glBlendFunc(775, 769, 1, 0);
+							mc.renderEngine.bindTexture(ret);
+							drawTexturedModalRect(xBounds / 2 - 7, yBounds / 2 - 7, r.u, r.v, 16, 16);
+							OpenGlHelper.glBlendFunc(770, 771, 1, 0);
+						}
+					}
+					if (!event.isCanceled()) {
+						event.setCanceled(true);
+						GL11.glEnable(GL11.GL_BLEND);
+						OpenGlHelper.glBlendFunc(775, 769, 1, 0);
+						mc.renderEngine.bindTexture(GuiIngame.icons);
+						drawTexturedModalRect(xBounds / 2 - 7, yBounds / 2 - 7, 0, 0, 16, 16);
+						OpenGlHelper.glBlendFunc(770, 771, 1, 0);
+					}
+					GL11.glPopMatrix();
+				}
 			}
+			
 		}
 		
 		if (event.type == ElementType.HOTBAR) {
@@ -200,7 +244,6 @@ public class GuiWarOverlay extends Gui {
         fr.drawStringWithShadow(timeLeft, 4, yBounds / 2 - (fr.FONT_HEIGHT / 2), 0xffeeeeff);
         
         // Map and gamemode + team
-        
         String teamColor = War3.getTeam(mc);
         
         if (teamColor == "red") {
@@ -212,6 +255,95 @@ public class GuiWarOverlay extends Gui {
         else {
         	fr.drawStringWithShadow("FFA", xBounds - fr.getStringWidth("FFA") - 4, 2, 0xffeeeeff);
         }
+    }
+    
+    private static Reticle getReticleCoords(Item i) {
+    	Guns g;
+    	if ((g = ScopeHandler.Guns.fromItem(i)) != null) {
+	    	switch (g) {
+	    	case L118:
+	    	case DRAG:
+	    	case BARR:
+	    	case MSR:
+	    	case ISOL:
+	    	case DISS:
+	    	case MAC1:
+	    	case MP7:
+	    	case UMP4:
+	    	case P90:
+	    	case PP90:
+	    	case M16:
+	    	case M4A1:
+	    	case AK47:
+	    	case FAMA:
+	    	case LAME:
+	    	case SKUL:
+	    	case RAYG:
+	    		return Reticle.VANILLA;
+	    	case USP4:
+	    	case M9:
+	    	case MAGN:
+	    	case DEAG:
+	    	case PYTH:
+	    		return Reticle.CROSS;
+	    	case M101:
+	    	case SPAS:
+	    	case AA12:
+	    	case MODE:
+	    	case SPAZ:
+	    	case TYPH:
+	    	case EXEC:
+	    		return Reticle.CIRCLE;
+	    	case MINI:
+	    		return Reticle.GATLING;
+	    	case FLAM:
+	    		return Reticle.FLAMETHROWER;
+	    	case LAW:
+	    	case CBOW:
+	    		return Reticle.LAUNCHER;
+	    	}
+    	}
+		if (i == Items.slime_ball || i == Items.glowstone_dust || i == Items.gunpowder || i == Items.ghast_tear)
+			return Reticle.TACTICAL;
+		if (i == Item.getItemFromBlock(Blocks.lever))
+			return Reticle.C4;
+    	return Reticle.VANILLA;
+    }
+    
+    private static float getScalingFac(Minecraft mc) {
+    	float scale = 1.0F;
+    	if (mc.thePlayer.isSneaking())
+    		scale *= 0.8F;
+    	if (mc.thePlayer.isInWater() || mc.thePlayer.isInLava() || mc.thePlayer.isOnLadder())
+    		scale *= 1.4F;
+    	if (!mc.thePlayer.onGround)
+    		scale *= 1.4F;
+    	if (Math.hypot(mc.thePlayer.motionX, mc.thePlayer.motionZ) > 0.05)
+    		scale *= 1.2F;
+    	if (mc.thePlayer.isSprinting())
+    		scale *= 1.2F;
+    	scale *= 1 + (shootTicks / 4);
+    	return Math.min(scale, 2.0F);
+    }
+    
+    private static enum Reticle {
+    	
+    	VANILLA(-1, -1),
+    	CIRCLE(0, 0),
+    	CROSS(16, 0),
+    	GATLING(32, 0),
+    	LAUNCHER(48, 0),
+    	FLAMETHROWER(64, 0),
+    	TACTICAL(0, 16),
+    	C4(16, 16);
+    	
+    	public final int u, v;
+    	
+    	private Reticle(int uCoord, int vCoord) {
+    		u = uCoord;
+    		v = vCoord;
+    	}
+    	
     }
 	
 }

@@ -95,6 +95,15 @@ public class ScopeHandler
     	{
     		return id;
     	}
+    	
+    	public static Guns fromItem(Item i) {
+    		int id = Item.getIdFromItem(i);
+    		for (Guns g : values()) {
+    			if (id == g.getId())
+    				return g;
+    		}
+    		return null;
+    	}
     }
     
 }

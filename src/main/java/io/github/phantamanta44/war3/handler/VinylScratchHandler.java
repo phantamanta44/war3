@@ -29,7 +29,7 @@ public class VinylScratchHandler {
 			Item i = is.getItem();
 			if (!ScopeHandler.isScopable(Item.getIdFromItem(i)))
 				return;
-			if (is.getDisplayName().toLowerCase().contains("reload"))
+			if (is.getDisplayName().toLowerCase().contains("reload") || is.getDisplayName().toLowerCase().contains("0 | 0"))
 				return;
 			renderBeam();
 		}

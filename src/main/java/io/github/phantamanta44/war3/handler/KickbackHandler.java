@@ -1,7 +1,7 @@
 package io.github.phantamanta44.war3.handler;
 
 import io.github.phantamanta44.war3.config.Config;
-import io.github.phantamanta44.war3.render.PumpedItemRenderer;
+import io.github.phantamanta44.war3.gui.GuiWarOverlay;
 import net.minecraft.client.Minecraft;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -31,12 +31,12 @@ public class KickbackHandler {
 	}
 	
 	public static void kickBack(double amt) {
-		activeOffset = Math.min(activeOffset + passiveOffset + amt, 90 - (activeOffset + passiveOffset));
+		GuiWarOverlay.shootTicks = Math.min(GuiWarOverlay.shootTicks + 5, 40);
+		if (Config.doKickback)
+			activeOffset = Math.min(activeOffset + passiveOffset + amt, 90 - (activeOffset + passiveOffset));
 	}
 	
 	public static void tryKickback(String path, Minecraft mc) {
-		if (!Config.doKickback)
-			return;
 		Item i;
 		try {
 			i = mc.thePlayer.inventory.getCurrentItem().getItem();

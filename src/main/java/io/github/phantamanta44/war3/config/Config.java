@@ -6,9 +6,15 @@ import java.io.File;
 
 public class Config {
 	
+	public static final String CAT_HUD = "hud";
+	public static final String CAT_VISUAL = "visual";
+	public static final String CAT_GAME = "gameplay";
+	public static final String CAT_EXTRA = "extra";
     public static Configuration config;
-
+    
     public static boolean showHotbar;
+    public static boolean altReticle;
+    public static boolean varReticle;
     public static boolean useModels;
     public static boolean doKickback;
     public static boolean beamMode;
@@ -21,11 +27,13 @@ public class Config {
 
     public static void syncConfig() {
     	
-        showHotbar = config.getBoolean("renderHotbar", Configuration.CATEGORY_GENERAL, false, "Show hotbar?");
-        useModels = config.getBoolean("renderModels", Configuration.CATEGORY_GENERAL, true, "Render models?");
-        doKickback = config.getBoolean("doKickback", Configuration.CATEGORY_GENERAL, false, "Camera recoil?");
-        beamMode = config.getBoolean("beamMode", Configuration.CATEGORY_GENERAL, false, "Bass cannon?");
-        beamSize = config.getFloat("beamSize", Configuration.CATEGORY_GENERAL, 1.2F, 0.4F, 3.0F, "Bass cannon size");
+        showHotbar = config.getBoolean("renderHotbar", CAT_HUD, false, "Show hotbar?");
+        altReticle = config.getBoolean("altReticle", CAT_HUD, true, "Alternate reticles?");
+        varReticle = config.getBoolean("varReticle", CAT_HUD, true, "Variable-size reticles?");
+        useModels = config.getBoolean("renderModels", CAT_VISUAL, true, "Render models?");
+        doKickback = config.getBoolean("doKickback", CAT_GAME, false, "Camera recoil?");
+        beamMode = config.getBoolean("beamMode", CAT_EXTRA, false, "Bass cannon?");
+        beamSize = config.getFloat("beamSize", CAT_EXTRA, 1.2F, 1.0F, 3.0F, "Bass cannon size");
         
         if (config.hasChanged())
             config.save();
