@@ -1,5 +1,6 @@
 package io.github.phantamanta44.war3.render;
 
+import io.github.phantamanta44.war3.War3;
 import io.github.phantamanta44.war3.handler.VazkiiTickHandler;
 import io.github.phantamanta44.war3.render.fx.FXSparkle;
 
@@ -29,9 +30,9 @@ public class FancyEffectLayer implements LayerRenderer {
 		if (!(ent instanceof EntityPlayer))
 			return;
 		EntityPlayer player = (EntityPlayer)ent;
-		//if (player.getUniqueID().toString().equals("5b435dcb-1d26-4324-85a9-b7c8be22b6ea"))
+		if (player.getUniqueID().toString().equals("5b435dcb-1d26-4324-85a9-b7c8be22b6ea"))
 			renderHorn(player, renderTick);
-		//if (War3.awesomePeople.contains(player.getUniqueID().toString())) {
+		if (War3.awesomePeople.contains(player.getUniqueID().toString())) {
 			Vec3 pos = player.getPositionVector();
 			Random rand = player.getRNG();
 			int x = rand.nextInt(8);
@@ -41,7 +42,7 @@ public class FancyEffectLayer implements LayerRenderer {
 						rand.nextFloat() + 1, (float)Math.sin(a), (float)Math.sin(a + (0.6 * Math.PI)), (float)Math.sin(a + (1.2 * Math.PI)), 5);
 				Minecraft.getMinecraft().effectRenderer.addEffect(spark);
 			}
-		//}
+		}
 	}
 
 	@Override
