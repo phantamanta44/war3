@@ -39,7 +39,7 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
-@Mod(modid="war3", name="MC-War Client", version="0.0.4", useMetadata=true, guiFactory="io.github.phantamanta44.war3.config.ConfigGuiFactory")
+@Mod(modid="war3", name="MC-War Client", version="0.0.5", useMetadata=true, guiFactory="io.github.phantamanta44.war3.config.ConfigGuiFactory")
 public class War3 {
 	
 		public static final String awesomePeopleUrl = "https://gist.githubusercontent.com/phantamanta44/048cb544cb2fe8c338e5/raw/awesomepeople.txt";

@@ -18,7 +18,7 @@ public class KickbackHandler {
 	}
 	
 	@SubscribeEvent
-	public void onPlayerTick(TickEvent.PlayerTickEvent event) {
+	public void onGameTick(TickEvent.ServerTickEvent event) {
 		if (activeOffset > 0) {
 			mc.thePlayer.rotationPitch -= activeOffset / 2;
 			passiveOffset += activeOffset / 2;
