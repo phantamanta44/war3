@@ -174,10 +174,21 @@ public class War3 {
     	
     	public static void raygunParticle(Minecraft mc, Vec3 pos) {
     		Random rand = mc.theWorld.rand;
-			FXWisp wisp = new FXWisp(mc.theWorld, pos.xCoord, pos.yCoord, pos.zCoord, 0.5F, 0.0F, 0.67F, 0.1F, false, false, 0.8F);
-			FXSparkle spark = new FXSparkle(mc.theWorld, pos.xCoord + rand.nextDouble(), pos.yCoord + rand.nextDouble(), pos.zCoord + rand.nextDouble(), 0.5F, 0.0F, 0.75F, 0.2F, 4);
+			FXWisp wisp = new FXWisp(mc.theWorld, pos.xCoord, pos.yCoord, pos.zCoord,
+					1.0F, 0.02F, 0.4F, 0.05F, false, false, 0.5F);
+			FXSparkle spark = new FXSparkle(mc.theWorld, pos.xCoord + rand.nextDouble() - 0.5, pos.yCoord + rand.nextDouble() - 0.5, pos.zCoord + rand.nextDouble() - 0.5,
+					2.0F, 0.03F, 0.6F, 0.04F, 6);
 			mc.effectRenderer.addEffect(wisp);
 			mc.effectRenderer.addEffect(spark);
+    	}
+    	
+    	public static void killTheZombiesPls(Minecraft mc) {
+    		Vec3 v = mc.thePlayer.getLookVec();
+    		Vec3 pos = mc.thePlayer.getPositionVector().add(new Vec3(0, 1.6, 0)).add(v);
+    		for (int i = 0; i < 32 && mc.theWorld.isAirBlock(new BlockPos(pos)); i++) {
+    			raygunParticle(mc, pos);
+    			pos = pos.add(v);
+    		}
     	}
     	
 }

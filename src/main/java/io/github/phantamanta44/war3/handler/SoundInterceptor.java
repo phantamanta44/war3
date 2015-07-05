@@ -28,7 +28,7 @@ public class SoundInterceptor {
 				mc.theWorld.playSoundAtEntity(mc.thePlayer, SoundType.RESPAWNRED.getLoc(), 1.0F, 1.0F);
 		}
 		if (event.sound.getPitch() == 2.0F) {
-			if (isNearPlayer(event.sound, mc, 0.3F))
+			if (isNearPlayer(event.sound, mc, 0.5F))
 				KickbackHandler.tryKickback(path, mc);
 			if (path.contains("tile.piston")) {
 				if (path.equals("tile.piston.out"))

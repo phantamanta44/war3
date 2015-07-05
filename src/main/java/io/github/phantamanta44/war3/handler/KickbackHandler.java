@@ -39,6 +39,7 @@ public class KickbackHandler {
 	}
 	
 	public static void tryKickback(String path, Minecraft mc) {
+		System.out.println(path);
 		Item i;
 		try {
 			i = mc.thePlayer.inventory.getCurrentItem().getItem();
@@ -76,8 +77,10 @@ public class KickbackHandler {
 		if (path.equals("mob.irongolem.hit")) {
 			if (i.getUnlocalizedName().contains("hatchet") || i == Items.bowl || i == Items.paper)
 				kickBack(24.9D);
-			else if (i == Items.bone)
+			else if (i == Items.bone) {
 				kickBack(14.0D);
+				War3.killTheZombiesPls(mc);
+			}
 		}
 	}
 	
