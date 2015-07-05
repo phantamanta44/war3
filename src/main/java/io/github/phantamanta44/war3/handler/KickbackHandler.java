@@ -1,7 +1,9 @@
 package io.github.phantamanta44.war3.handler;
 
+import io.github.phantamanta44.war3.War3;
 import io.github.phantamanta44.war3.config.Config;
 import io.github.phantamanta44.war3.gui.GuiWarOverlay;
+import io.github.phantamanta44.war3.render.model.RevolverItemRenderer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -48,8 +50,10 @@ public class KickbackHandler {
 				|| mc.thePlayer.inventory.getCurrentItem().getDisplayName().contains("0 | 0"))
 			return;
 		if (path.equals("mob.zombie.metal")) {
-			if (i == Items.iron_shovel || i == Items.leather || i == Items.golden_shovel)
+			if (i == Items.iron_shovel || i == Items.leather || i == Items.golden_shovel) {
 				kickBack(18.5D);
+				RevolverItemRenderer.revolve();
+			}
 			else if (i.getUnlocalizedName().contains("shovel"))
 				kickBack(0.03D);
 		}
@@ -72,6 +76,8 @@ public class KickbackHandler {
 		if (path.equals("mob.irongolem.hit")) {
 			if (i.getUnlocalizedName().contains("hatchet") || i == Items.bowl || i == Items.paper)
 				kickBack(24.9D);
+			else if (i == Items.bone)
+				kickBack(14.0D);
 		}
 	}
 	

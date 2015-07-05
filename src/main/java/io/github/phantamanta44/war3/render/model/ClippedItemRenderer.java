@@ -1,4 +1,4 @@
-package io.github.phantamanta44.war3.render;
+package io.github.phantamanta44.war3.render.model;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
@@ -7,14 +7,14 @@ import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.opengl.GL11;
 
-public class PumpedItemRenderer extends ObjModelItemRenderer {
+public class ClippedItemRenderer extends ObjModelItemRenderer {
 
-	protected static double pump = 0, pumpTar = 0;
-	protected String pumpName;
+	protected static double clip = 0, clipTar = 0;
+	protected String clipName;
 	
-	public PumpedItemRenderer(ResourceLocation path, ResourceLocation texMap, String pumpObj) {
+	public ClippedItemRenderer(ResourceLocation path, ResourceLocation texMap, String clipObj) {
 		super(path, texMap);
-		pumpName = pumpObj;
+		clipName = clipObj;
 	}
 
 	@Override
@@ -22,6 +22,8 @@ public class PumpedItemRenderer extends ObjModelItemRenderer {
 		
 		float scaleMultTar = 1;
 		Minecraft mc = Minecraft.getMinecraft();
+		
+		clipTar = item.getDisplayName().toLowerCase().contains("reload") ? -32 : 0;
 		
 		double facing = (double)(mc.thePlayer.rotationYaw + 90) % 360;
 		double pitch = (double)(mc.thePlayer.rotationPitch + 140) % 360 - 140;
@@ -59,12 +61,15 @@ public class PumpedItemRenderer extends ObjModelItemRenderer {
 		GL11.glTranslated(xOffset, 0.0, zOffset);
 		GL11.glRotated(-facing + 90, 0.0, 1.0, 0.0);
 		GL11.glRotated(pitch, 1.0, 0.0, 0.0);
+		GL11.glRotated(clip, 1.0, 0.0, -1.0);
 		GL11.glScaled(0.04 * scaleMult, 0.04 * scaleMult, 0.04 * scaleMult);
 		mc.renderEngine.bindTexture(texture);
-		model.renderAllExcept(pumpName);
+		model.renderAllExcept(clipName);
 		
-		GL11.glTranslated(0.0, 0.0, -pump);
-		model.renderOnly(pumpName);
+		GL11.glRotated(-clip, 1.0, 0.0, -1.0);
+		GL11.glTranslated(0.0, clip, 0.0);
+		if (clipTar == 0 || clip != clipTar)
+			model.renderOnly(clipName);
 		
 		GL11.glPopMatrix();
 	}
@@ -79,12 +84,8 @@ public class PumpedItemRenderer extends ObjModelItemRenderer {
 		if (scaleMult != scaleMultTar)
 			scaleMult += (scaleMultTar - scaleMult) / 2.71;
 		
-		if (pump != pumpTar)
-			pump += (pumpTar - pump) / 1.8;
-	}
-	
-	public static void setPumping(boolean pumping) {
-		pumpTar = pumping ? 6.0 : 0;
+		if (clip != clipTar)
+			clip += (clipTar - clip) / 8.4;
 	}
 	
 }

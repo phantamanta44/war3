@@ -1,42 +1,22 @@
-package io.github.phantamanta44.war3.render;
+package io.github.phantamanta44.war3.render.model;
 
-import io.github.phantamanta44.war3.model.AdvancedModelLoader;
-import io.github.phantamanta44.war3.model.IModelCustom;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.IItemRenderer;
 
 import org.lwjgl.opengl.GL11;
 
-public class ObjModelItemRenderer implements IItemRenderer {
+public class BoltActionItemRenderer extends ClippedItemRenderer {
 
-	protected static final double HALF_PI = Math.PI / 180;
-	protected static double xOffset, zOffset, scaleMult = 0;
-	protected IModelCustom model;
-	protected ResourceLocation texture;
+	protected static double bolt = 0, boltTar = 0;
+	protected String boltName;
+	protected double boltOffset;
 	
-	public ObjModelItemRenderer(ResourceLocation path, ResourceLocation texMap) {
-		model = AdvancedModelLoader.loadModel(path);
-		texture = texMap;
-		model.renderAll();
-	}
-	
-	@Override
-	public boolean handleRenderType(ItemStack item, ItemRenderType type) {
-		switch (type) {
-		case EQUIPPED:
-		case EQUIPPED_FIRST_PERSON:
-			return true;
-		default:
-			return false;
-		}
-	}
-
-	@Override
-	public boolean shouldUseRenderHelper(ItemRenderType type, ItemStack item, ItemRendererHelper helper) {
-		return false;
+	public BoltActionItemRenderer(ResourceLocation path, ResourceLocation texMap, String clipObj, String boltObj, double off) {
+		super(path, texMap, clipObj);
+		boltName = boltObj;
+		boltOffset = off;
 	}
 
 	@Override
@@ -44,6 +24,8 @@ public class ObjModelItemRenderer implements IItemRenderer {
 		
 		float scaleMultTar = 1;
 		Minecraft mc = Minecraft.getMinecraft();
+		
+		clipTar = item.getDisplayName().toLowerCase().contains("reload") ? -32 : 0;
 		
 		double facing = (double)(mc.thePlayer.rotationYaw + 90) % 360;
 		double pitch = (double)(mc.thePlayer.rotationPitch + 140) % 360 - 140;
@@ -81,9 +63,38 @@ public class ObjModelItemRenderer implements IItemRenderer {
 		GL11.glTranslated(xOffset, 0.0, zOffset);
 		GL11.glRotated(-facing + 90, 0.0, 1.0, 0.0);
 		GL11.glRotated(pitch, 1.0, 0.0, 0.0);
+		GL11.glRotated(clip, 1.0, 0.0, -1.0);
 		GL11.glScaled(0.04 * scaleMult, 0.04 * scaleMult, 0.04 * scaleMult);
 		mc.renderEngine.bindTexture(texture);
-		model.renderAll();
+		model.renderAllExcept(clipName, boltName);
+		
+		GL11.glPopMatrix();
+		GL11.glPushMatrix();
+		
+		GL11.glTranslated(-xFix, yFix, zFix);
+		GL11.glTranslated(xOffset, 0.0, zOffset);
+		GL11.glRotated(-facing + 90, 0.0, 1.0, 0.0);
+		GL11.glRotated(pitch, 1.0, 0.0, 0.0);
+		GL11.glRotated(clip, 1.0, 0.0, -1.0);
+		GL11.glScaled(0.04 * scaleMult, 0.04 * scaleMult, 0.04 * scaleMult);
+		GL11.glTranslated(0.0, boltOffset, 0.0);
+		GL11.glRotated(bolt * 16, 0.0, 0.0, 1.0);
+		GL11.glTranslated(0.0, -boltOffset, 0.0);
+		if (bolt < -1.5)
+			GL11.glTranslated(0.0, 0.0, 1.4 * bolt + 1.5);
+		model.renderOnly(boltName);
+		
+		GL11.glPopMatrix();
+		GL11.glPushMatrix();
+		
+		GL11.glTranslated(-xFix, yFix, zFix);
+		GL11.glTranslated(xOffset, 0.0, zOffset);
+		GL11.glRotated(-facing + 90, 0.0, 1.0, 0.0);
+		GL11.glRotated(pitch, 1.0, 0.0, 0.0);
+		GL11.glScaled(0.04 * scaleMult, 0.04 * scaleMult, 0.04 * scaleMult);
+		GL11.glTranslated(0.0, clip, 0.0);
+		if (clipTar == 0 || clip != clipTar)
+			model.renderOnly(clipName);
 		
 		GL11.glPopMatrix();
 	}
@@ -97,6 +108,16 @@ public class ObjModelItemRenderer implements IItemRenderer {
 		
 		if (scaleMult != scaleMultTar)
 			scaleMult += (scaleMultTar - scaleMult) / 2.71;
+
+		if (clip != clipTar)
+			clip += (clipTar - clip) / 8.4;
+		
+		if (bolt != boltTar)
+			bolt += (boltTar - bolt) / 8.4;
+	}
+	
+	public static void setWorking(boolean w) {
+		boltTar = w ? -4.0 : 0;
 	}
 	
 }

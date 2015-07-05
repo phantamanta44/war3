@@ -11,6 +11,8 @@ import io.github.phantamanta44.war3.handler.WarChatHandler;
 import io.github.phantamanta44.war3.handler.WorldRenderHandler;
 import io.github.phantamanta44.war3.render.FancyEffectLayer;
 import io.github.phantamanta44.war3.render.ItemRenderInterceptor;
+import io.github.phantamanta44.war3.render.fx.FXSparkle;
+import io.github.phantamanta44.war3.render.fx.FXWisp;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -19,6 +21,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Random;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.network.NetHandlerPlayClient;
@@ -29,6 +32,8 @@ import net.minecraft.client.renderer.entity.RenderPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.Vec3;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Mod;
@@ -165,6 +170,14 @@ public class War3 {
     			}
     		}
     		return 1337;
+    	}
+    	
+    	public static void raygunParticle(Minecraft mc, Vec3 pos) {
+    		Random rand = mc.theWorld.rand;
+			FXWisp wisp = new FXWisp(mc.theWorld, pos.xCoord, pos.yCoord, pos.zCoord, 0.5F, 0.0F, 0.67F, 0.1F, false, false, 0.8F);
+			FXSparkle spark = new FXSparkle(mc.theWorld, pos.xCoord + rand.nextDouble(), pos.yCoord + rand.nextDouble(), pos.zCoord + rand.nextDouble(), 0.5F, 0.0F, 0.75F, 0.2F, 4);
+			mc.effectRenderer.addEffect(wisp);
+			mc.effectRenderer.addEffect(spark);
     	}
     	
 }

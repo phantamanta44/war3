@@ -2,7 +2,8 @@ package io.github.phantamanta44.war3.handler;
 
 import io.github.phantamanta44.war3.SoundType;
 import io.github.phantamanta44.war3.War3;
-import io.github.phantamanta44.war3.render.PumpedItemRenderer;
+import io.github.phantamanta44.war3.render.model.BoltActionItemRenderer;
+import io.github.phantamanta44.war3.render.model.PumpedItemRenderer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.ISound;
 import net.minecraftforge.client.event.sound.PlaySoundEvent;
@@ -35,6 +36,12 @@ public class SoundInterceptor {
 				else
 					PumpedItemRenderer.setPumping(false);
 			}
+		}
+		if (path.contains("random.door")) {
+			if (path.equals("random.door_open"))
+				BoltActionItemRenderer.setWorking(true);
+			else
+				BoltActionItemRenderer.setWorking(false);
 		}
 	}
 	

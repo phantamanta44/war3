@@ -1,20 +1,42 @@
-package io.github.phantamanta44.war3.render;
+package io.github.phantamanta44.war3.render.model;
 
+import io.github.phantamanta44.war3.model.AdvancedModelLoader;
+import io.github.phantamanta44.war3.model.IModelCustom;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.client.IItemRenderer;
 
 import org.lwjgl.opengl.GL11;
 
-public class ClippedItemRenderer extends ObjModelItemRenderer {
+public class ObjModelItemRenderer implements IItemRenderer {
 
-	protected static double clip = 0, clipTar = 0;
-	protected String clipName;
+	protected static final double HALF_PI = Math.PI / 180;
+	protected static double xOffset, zOffset, scaleMult = 0;
+	protected IModelCustom model;
+	protected ResourceLocation texture;
 	
-	public ClippedItemRenderer(ResourceLocation path, ResourceLocation texMap, String clipObj) {
-		super(path, texMap);
-		clipName = clipObj;
+	public ObjModelItemRenderer(ResourceLocation path, ResourceLocation texMap) {
+		model = AdvancedModelLoader.loadModel(path);
+		texture = texMap;
+		model.renderAll();
+	}
+	
+	@Override
+	public boolean handleRenderType(ItemStack item, ItemRenderType type) {
+		switch (type) {
+		case EQUIPPED:
+		case EQUIPPED_FIRST_PERSON:
+			return true;
+		default:
+			return false;
+		}
+	}
+
+	@Override
+	public boolean shouldUseRenderHelper(ItemRenderType type, ItemStack item, ItemRendererHelper helper) {
+		return false;
 	}
 
 	@Override
@@ -22,8 +44,6 @@ public class ClippedItemRenderer extends ObjModelItemRenderer {
 		
 		float scaleMultTar = 1;
 		Minecraft mc = Minecraft.getMinecraft();
-		
-		clipTar = item.getDisplayName().toLowerCase().contains("reload") ? -25 : 0;
 		
 		double facing = (double)(mc.thePlayer.rotationYaw + 90) % 360;
 		double pitch = (double)(mc.thePlayer.rotationPitch + 140) % 360 - 140;
@@ -61,15 +81,9 @@ public class ClippedItemRenderer extends ObjModelItemRenderer {
 		GL11.glTranslated(xOffset, 0.0, zOffset);
 		GL11.glRotated(-facing + 90, 0.0, 1.0, 0.0);
 		GL11.glRotated(pitch, 1.0, 0.0, 0.0);
-		GL11.glRotated(clip, 1.0, 0.0, -1.0);
 		GL11.glScaled(0.04 * scaleMult, 0.04 * scaleMult, 0.04 * scaleMult);
 		mc.renderEngine.bindTexture(texture);
-		model.renderAllExcept(clipName);
-		
-		GL11.glRotated(-clip, 1.0, 0.0, -1.0);
-		GL11.glTranslated(0.0, clip, 0.0);
-		if (clipTar == 0 || clip != clipTar)
-			model.renderOnly(clipName);
+		model.renderAll();
 		
 		GL11.glPopMatrix();
 	}
@@ -83,9 +97,6 @@ public class ClippedItemRenderer extends ObjModelItemRenderer {
 		
 		if (scaleMult != scaleMultTar)
 			scaleMult += (scaleMultTar - scaleMult) / 2.71;
-		
-		if (clip != clipTar)
-			clip += (clipTar - clip) / 8.4;
 	}
 	
 }

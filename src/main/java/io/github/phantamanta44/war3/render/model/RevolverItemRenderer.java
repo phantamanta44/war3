@@ -1,4 +1,4 @@
-package io.github.phantamanta44.war3.render;
+package io.github.phantamanta44.war3.render.model;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
@@ -7,10 +7,16 @@ import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.opengl.GL11;
 
-public class P90ItemRenderer extends ClippedItemRenderer {
+public class RevolverItemRenderer extends ObjModelItemRenderer {
+
+	protected static double cham = 0, chamTar = 0;
+	protected String chamName;
+	protected double chamOffset;
 	
-	public P90ItemRenderer(ResourceLocation path, ResourceLocation texMap, String clipObj) {
-		super(path, texMap, clipObj);
+	public RevolverItemRenderer(ResourceLocation path, ResourceLocation texMap, String chamObj, double off) {
+		super(path, texMap);
+		chamName = chamObj;
+		chamOffset = off;
 	}
 
 	@Override
@@ -18,8 +24,6 @@ public class P90ItemRenderer extends ClippedItemRenderer {
 		
 		float scaleMultTar = 1;
 		Minecraft mc = Minecraft.getMinecraft();
-		
-		clipTar = item.getDisplayName().toLowerCase().contains("reload") ? -20 : 0;
 		
 		double facing = (double)(mc.thePlayer.rotationYaw + 90) % 360;
 		double pitch = (double)(mc.thePlayer.rotationPitch + 140) % 360 - 140;
@@ -57,16 +61,42 @@ public class P90ItemRenderer extends ClippedItemRenderer {
 		GL11.glTranslated(xOffset, 0.0, zOffset);
 		GL11.glRotated(-facing + 90, 0.0, 1.0, 0.0);
 		GL11.glRotated(pitch, 1.0, 0.0, 0.0);
-		GL11.glRotated(clip, 1.0, 0.0, 0.0);
 		GL11.glScaled(0.04 * scaleMult, 0.04 * scaleMult, 0.04 * scaleMult);
 		mc.renderEngine.bindTexture(texture);
-		model.renderAllExcept(clipName);
-		
-		GL11.glRotated(-clip, 1.0, 0.0, 0.0);
-		GL11.glTranslated(0.0, 0.0, clip);
-		model.renderOnly(clipName);
+		model.renderAllExcept(chamName);
 		
 		GL11.glPopMatrix();
+		GL11.glPushMatrix();
+		
+		GL11.glTranslated(-xFix, yFix, zFix);
+		GL11.glTranslated(xOffset, 0.0, zOffset);
+		GL11.glRotated(-facing + 90, 0.0, 1.0, 0.0);
+		GL11.glRotated(pitch, 1.0, 0.0, 0.0);
+		GL11.glScaled(0.04 * scaleMult, 0.04 * scaleMult, 0.04 * scaleMult);
+		GL11.glTranslated(0.0, chamOffset, 0.0);
+		GL11.glRotated(cham, 0.0, 0.0, 1.0);
+		GL11.glTranslated(0.0, -chamOffset, 0.0);
+		model.renderOnly(chamName);
+		
+		GL11.glPopMatrix();
+	}
+
+	protected static void inchStatics(double xOffsetTar, double zOffsetTar, double scaleMultTar) {
+		if (xOffset != xOffsetTar)
+			xOffset += (xOffsetTar - xOffset) / 2.71;
+		
+		if (zOffset != zOffsetTar)
+			zOffset += (zOffsetTar - zOffset) / 2.71;
+		
+		if (scaleMult != scaleMultTar)
+			scaleMult += (scaleMultTar - scaleMult) / 2.71;
+		
+		if (cham != chamTar)
+			cham += (chamTar - cham) / 6;
+	}
+	
+	public static void revolve() {
+		chamTar += 60;
 	}
 	
 }

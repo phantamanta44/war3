@@ -1,6 +1,14 @@
 package io.github.phantamanta44.war3.render;
 
 import io.github.phantamanta44.war3.config.Config;
+import io.github.phantamanta44.war3.render.model.BoltActionItemRenderer;
+import io.github.phantamanta44.war3.render.model.ClippedItemRenderer;
+import io.github.phantamanta44.war3.render.model.L96ItemRenderer;
+import io.github.phantamanta44.war3.render.model.ObjModelItemRenderer;
+import io.github.phantamanta44.war3.render.model.P90ItemRenderer;
+import io.github.phantamanta44.war3.render.model.PumpedItemRenderer;
+import io.github.phantamanta44.war3.render.model.RevolverItemRenderer;
+import io.github.phantamanta44.war3.render.model.StraightPullBoltItemRenderer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.init.Items;
 import net.minecraft.util.ResourceLocation;
@@ -53,24 +61,24 @@ public class ItemRenderInterceptor {
     			new ResourceLocation("war3", "model/obj/assault6.obj"),
     			new ResourceLocation("war3", "textures/model/g36.png"), "Mag.018"));
     	
-    	MinecraftForgeClient.registerItemRenderer(Items.wooden_axe, new ClippedItemRenderer(
+    	MinecraftForgeClient.registerItemRenderer(Items.wooden_axe, new BoltActionItemRenderer(
     			new ResourceLocation("war3", "model/obj/sniper1.obj"),
-    			new ResourceLocation("war3", "textures/model/sv98.png"), "Mag.018"));
+    			new ResourceLocation("war3", "textures/model/sv98.png"), "Mag.018", "Bolt.019", 3.05));
     	MinecraftForgeClient.registerItemRenderer(Items.stone_axe, new ClippedItemRenderer(
     			new ResourceLocation("war3", "model/obj/sniper2.obj"),
     			new ResourceLocation("war3", "textures/model/mk11.png"), "Mag.008"));
-    	MinecraftForgeClient.registerItemRenderer(Items.iron_axe, new ClippedItemRenderer(
+    	MinecraftForgeClient.registerItemRenderer(Items.iron_axe, new BoltActionItemRenderer(
     			new ResourceLocation("war3", "model/obj/sniper3.obj"),
-    			new ResourceLocation("war3", "textures/model/m98b.png"), "Mag.009"));
-    	MinecraftForgeClient.registerItemRenderer(Items.diamond_axe, new ClippedItemRenderer(
+    			new ResourceLocation("war3", "textures/model/m98b.png"), "Mag.009", "Bolt.011", -0.5));
+    	MinecraftForgeClient.registerItemRenderer(Items.diamond_axe, new StraightPullBoltItemRenderer(
     			new ResourceLocation("war3", "model/obj/sniper4.obj"),
-    			new ResourceLocation("war3", "textures/model/m39.png"), "Mag.011"));
-    	MinecraftForgeClient.registerItemRenderer(Items.bowl, new ClippedItemRenderer(
+    			new ResourceLocation("war3", "textures/model/m39.png"), "Mag.011", "Bolt.012"));
+    	MinecraftForgeClient.registerItemRenderer(Items.bowl, new L96ItemRenderer(
     			new ResourceLocation("war3", "model/obj/sniper5.obj"),
-    			new ResourceLocation("war3", "textures/model/l96.png"), "Mag.019"));
-    	MinecraftForgeClient.registerItemRenderer(Items.paper, new ClippedItemRenderer(
+    			new ResourceLocation("war3", "textures/model/l96.png"), "Mag.019", "Bolt2.002", "Bolt.020", 2.48));
+    	MinecraftForgeClient.registerItemRenderer(Items.paper, new StraightPullBoltItemRenderer(
     			new ResourceLocation("war3", "model/obj/sniper6.obj"),
-    			new ResourceLocation("war3", "textures/model/sks.png"), "Mag.016"));
+    			new ResourceLocation("war3", "textures/model/sks.png"), "Mag.016", "Bolt.017"));
     	
     	MinecraftForgeClient.registerItemRenderer(Items.wooden_pickaxe, new ObjModelItemRenderer(
     			new ResourceLocation("war3", "model/obj/shotgun1.obj"),
@@ -78,15 +86,15 @@ public class ItemRenderInterceptor {
     	MinecraftForgeClient.registerItemRenderer(Items.stone_pickaxe, new PumpedItemRenderer(
     			new ResourceLocation("war3", "model/obj/shotgun2.obj"),
     			new ResourceLocation("war3", "textures/model/spas12.png"), "Pump.002"));
-    	MinecraftForgeClient.registerItemRenderer(Items.iron_pickaxe, new ObjModelItemRenderer(
+    	MinecraftForgeClient.registerItemRenderer(Items.iron_pickaxe, new ClippedItemRenderer(
     			new ResourceLocation("war3", "model/obj/shotgun3.obj"),
-    			new ResourceLocation("war3", "textures/model/usas.png")));
+    			new ResourceLocation("war3", "textures/model/usas.png"), "Mag.001"));
     	MinecraftForgeClient.registerItemRenderer(Items.diamond_pickaxe, new PumpedItemRenderer(
     			new ResourceLocation("war3", "model/obj/shotgun4.obj"),
     			new ResourceLocation("war3", "textures/model/870.png"), "Pump.001"));
-    	MinecraftForgeClient.registerItemRenderer(Items.stick, new ObjModelItemRenderer(
+    	MinecraftForgeClient.registerItemRenderer(Items.stick, new ClippedItemRenderer(
     			new ResourceLocation("war3", "model/obj/shotgun5.obj"),
-    			new ResourceLocation("war3", "textures/model/saiga.png")));
+    			new ResourceLocation("war3", "textures/model/saiga.png"), "default001.001"));
     	MinecraftForgeClient.registerItemRenderer(Items.brick, new ObjModelItemRenderer(
     			new ResourceLocation("war3", "model/obj/shotgun6.obj"),
     			new ResourceLocation("war3", "textures/model/dao12.png")));
@@ -97,18 +105,18 @@ public class ItemRenderInterceptor {
     	MinecraftForgeClient.registerItemRenderer(Items.stone_shovel, new ClippedItemRenderer(
     			new ResourceLocation("war3", "model/obj/pistol2.obj"),
     			new ResourceLocation("war3", "textures/model/m9.png"), "Mag.021"));
-    	MinecraftForgeClient.registerItemRenderer(Items.iron_shovel, new ObjModelItemRenderer(
+    	MinecraftForgeClient.registerItemRenderer(Items.iron_shovel, new RevolverItemRenderer(
     			new ResourceLocation("war3", "model/obj/pistol3.obj"),
-    			new ResourceLocation("war3", "textures/model/mp412.png")));
+    			new ResourceLocation("war3", "textures/model/mp412.png"), "Chamber.001", 2.875));
     	MinecraftForgeClient.registerItemRenderer(Items.diamond_shovel, new ClippedItemRenderer(
     			new ResourceLocation("war3", "model/obj/pistol4.obj"),
     			new ResourceLocation("war3", "textures/model/deagle.png"), "Mag.024"));
     	MinecraftForgeClient.registerItemRenderer(Items.leather, new ClippedItemRenderer(
     			new ResourceLocation("war3", "model/obj/pistol5.obj"),
     			new ResourceLocation("war3", "textures/model/m9.png"), "Mag.023"));
-    	MinecraftForgeClient.registerItemRenderer(Items.golden_shovel, new ObjModelItemRenderer(
+    	MinecraftForgeClient.registerItemRenderer(Items.golden_shovel, new RevolverItemRenderer(
     			new ResourceLocation("war3", "model/obj/pistol6.obj"),
-    			new ResourceLocation("war3", "textures/model/t44.png")));
+    			new ResourceLocation("war3", "textures/model/t44.png"), "Trigger001", 2.1725));
     	
     	MinecraftForgeClient.registerItemRenderer(Items.feather, new ClippedItemRenderer(
     			new ResourceLocation("war3", "model/obj/smg1.obj"),
@@ -122,9 +130,9 @@ public class ItemRenderInterceptor {
     	MinecraftForgeClient.registerItemRenderer(Items.gold_nugget, new P90ItemRenderer(
     			new ResourceLocation("war3", "model/obj/smg4.obj"),
     			new ResourceLocation("war3", "textures/model/p90.png"), "Mag.005"));
-    	MinecraftForgeClient.registerItemRenderer(Items.nether_wart, new ObjModelItemRenderer(
+    	MinecraftForgeClient.registerItemRenderer(Items.nether_wart, new ClippedItemRenderer(
     			new ResourceLocation("war3", "model/obj/smg5.obj"),
-    			new ResourceLocation("war3", "textures/model/pp2k.png")));
+    			new ResourceLocation("war3", "textures/model/pp2k.png"), "default001.004"));
     	
     	/*MinecraftForgeClient.registerItemRenderer(Items.golden_pickaxe, new ObjModelItemRenderer(
     			new ResourceLocation("war3", "model/obj/flamethrower.obj"),
@@ -132,9 +140,9 @@ public class ItemRenderInterceptor {
     	MinecraftForgeClient.registerItemRenderer(Items.bow, new ObjModelItemRenderer(
     			new ResourceLocation("war3", "model/obj/crossbow.obj"),
     			new ResourceLocation("war3", "textures/model/m320.png")));
-    	MinecraftForgeClient.registerItemRenderer(Items.golden_hoe, new ObjModelItemRenderer(
+    	MinecraftForgeClient.registerItemRenderer(Items.golden_hoe, new ClippedItemRenderer(
     			new ResourceLocation("war3", "model/obj/law.obj"),
-    			new ResourceLocation("war3", "textures/model/smaw.png")));
+    			new ResourceLocation("war3", "textures/model/smaw.png"), "Missile.001"));
     	MinecraftForgeClient.registerItemRenderer(Items.diamond, new ClippedItemRenderer(
     			new ResourceLocation("war3", "model/obj/minigun.obj"),
     			new ResourceLocation("war3", "textures/model/m249.png"), "MagBox"));

@@ -21,10 +21,8 @@ public class WorldRenderHandler {
 	@SubscribeEvent
 	public void onRenderEntityLiving(RenderLivingEvent.Pre event) {
 		if (event.entity instanceof EntityPlayer && event.renderer instanceof RenderPlayer) {
-			if (!RenderHackThing.getLayers(event.renderer).contains("io.github.phantamanta44.war3.render.FancyEffectLayer")) {
-				System.out.println("[War3] Player renderer doesn't contain FancyEffectLayer!");
+			if (!RenderHackThing.getLayers(event.renderer).contains("io.github.phantamanta44.war3.render.FancyEffectLayer"))
 				RenderHackThing.addLayer(event.renderer, new FancyEffectLayer((RenderPlayer)event.renderer));
-			}
 		}
 	}
 	
