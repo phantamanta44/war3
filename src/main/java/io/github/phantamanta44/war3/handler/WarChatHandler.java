@@ -2,6 +2,7 @@ package io.github.phantamanta44.war3.handler;
 
 import io.github.phantamanta44.war3.SoundType;
 import io.github.phantamanta44.war3.War3;
+import io.github.phantamanta44.war3.War3.Team;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraftforge.client.event.ClientChatReceivedEvent;
@@ -32,28 +33,22 @@ public class WarChatHandler {
 		
 		// CTF Parsing
 		if (msg.contains("§6 picked up the")) {
-			if (msg.contains("BLUE")) {
-				processCTFMsg(0, "blue", msg);
-			}
-			else if (msg.contains("RED")) {
-				processCTFMsg(0, "red", msg);
-			}
+			if (msg.contains("BLUE"))
+				processCTFMsg(CtfMsg.PICKUP, Team.BLUE, msg);
+			else if (msg.contains("RED"))
+				processCTFMsg(CtfMsg.PICKUP, Team.RED, msg);
 		}
 		else if (msg.contains("§6 dropped the")) {
-			if (msg.contains("BLUE")) {
-				processCTFMsg(1, "blue", msg);
-			}
-			else if (msg.contains("RED")) {
-				processCTFMsg(1, "red", msg);
-			}
+			if (msg.contains("BLUE"))
+				processCTFMsg(CtfMsg.DROP, Team.BLUE, msg);
+			else if (msg.contains("RED"))
+				processCTFMsg(CtfMsg.DROP, Team.RED, msg);
 		}
 		else if (msg.contains("§b captured the")) {
-			if (msg.contains("BLUE")) {
-				processCTFMsg(2, "blue", msg);
-			}
-			else if (msg.contains("RED")) {
-				processCTFMsg(2, "red", msg);
-			}
+			if (msg.contains("BLUE"))
+				processCTFMsg(CtfMsg.CAPTURE, Team.BLUE, msg);
+			else if (msg.contains("RED"))
+				processCTFMsg(CtfMsg.CAPTURE, Team.RED, msg);
 		}
 		
 		/*
@@ -95,27 +90,27 @@ public class WarChatHandler {
 		
 	}
 	
-	private static void processCTFMsg(int status, String color, String msg)
+	@SuppressWarnings("incomplete-switch")
+	private static void processCTFMsg(CtfMsg status, Team team, String msg)
 	{
 		Minecraft mc = Minecraft.getMinecraft();
-		if (War3.getTeam(mc) == "red") {
-			if (status == 1) {
+		if (War3.getTeam(mc) == Team.RED) {
+			if (status == CtfMsg.DROP)
 				mc.theWorld.playSoundAtEntity(mc.thePlayer, SoundType.FLAGDROPRED.getLoc(), 1.0F, 1.0F);
-			}
-			if (War3.getTeam(mc) == color) {
+			if (War3.getTeam(mc) == team) {
 				switch (status) {
-				case 0:
+				case PICKUP:
 					break;
-				case 2:
+				case CAPTURE:
 					mc.theWorld.playSoundAtEntity(mc.thePlayer, SoundType.ENEMYFLAGCAPRED.getLoc(), 1.0F, 1.0F);
 					break;
 				}
 			}
-			else if (War3.getTeam(mc) != color) {
+			else if (War3.getTeam(mc) != team) {
 				switch (status) {
-				case 0:
+				case PICKUP:
 					break;
-				case 2:
+				case CAPTURE:
 					mc.theWorld.playSoundAtEntity(mc.thePlayer, SoundType.FLAGCAPRED.getLoc(), 1.0F, 1.0F);
 					if (msg.contains(mc.getSession().getUsername())) {
 						mc.theWorld.playSoundAtEntity(mc.thePlayer, SoundType.UINOTIFICATION.getLoc(), 1.0F, 1.0F);
@@ -126,24 +121,24 @@ public class WarChatHandler {
 			}
 		}
 			
-		if (War3.getTeam(mc) == "blue") {
-			if (status == 1) {
+		if (War3.getTeam(mc) == Team.BLUE) {
+			if (status == CtfMsg.DROP) {
 				mc.theWorld.playSoundAtEntity(mc.thePlayer, SoundType.FLAGDROPBLUE.getLoc(), 1.0F, 1.0F);
 			}
-			if (War3.getTeam(mc) == color) {
+			if (War3.getTeam(mc) == team) {
 				switch (status) {
-				case 0:
+				case PICKUP:
 					mc.theWorld.playSoundAtEntity(mc.thePlayer, SoundType.ENEMYFLAGCAPBLUE.getLoc(), 1.0F, 1.0F);
 					break;
-				case 2:
+				case CAPTURE:
 					break;
 				}
 			}
-			else if (War3.getTeam(mc) != color) {
+			else if (War3.getTeam(mc) != team) {
 				switch (status) {
-				case 0:
+				case PICKUP:
 					break;
-				case 2:
+				case CAPTURE:
 					mc.theWorld.playSoundAtEntity(mc.thePlayer, SoundType.FLAGCAPBLUE.getLoc(), 1.0F, 1.0F);
 					if (msg.contains(mc.getSession().getUsername())) {
 						mc.theWorld.playSoundAtEntity(mc.thePlayer, SoundType.UINOTIFICATION.getLoc(), 1.0F, 1.0F);
@@ -153,6 +148,12 @@ public class WarChatHandler {
 				}
 			}
 		}
+	}
+	
+	public static enum CtfMsg {
+		
+		PICKUP, DROP, CAPTURE;
+		
 	}
 	
 }

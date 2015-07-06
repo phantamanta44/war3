@@ -29,6 +29,7 @@ import net.minecraft.client.renderer.entity.RenderHackThing;
 import net.minecraft.client.renderer.entity.RenderHackThing.DummyHackPlayer;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.entity.RenderPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -58,7 +59,7 @@ public class War3 {
         @SidedProxy(clientSide="io.github.phantamanta44.war3.CommonProxy", serverSide="io.github.phantamanta44.war3.CommonProxy")
         public static CommonProxy proxy;
         
-        public static String cachedTeam = "blue";
+        public static Team cachedTeam = Team.BLUE;
         
         @EventHandler
         public void preInit(FMLPreInitializationEvent event) {
@@ -128,48 +129,46 @@ public class War3 {
     	}
     	
     	public static String toIntString(String i) {
-    		if (i.contains(".")) {
+    		if (i.contains("."))
     			return i.split("\\.")[0] + "%";
-    		}
     		return i + "%";
     	}
     	
-    	public static String getTeam(Minecraft mc) {
-    		if (mc.thePlayer.inventory.armorItemInSlot(3) != null) {
-    			ItemStack helmItem = mc.thePlayer.inventory.armorItemInSlot(3);
-    			if (Item.getIdFromItem(helmItem.getItem()) == 397) {
-    				cachedTeam = "red";
-    				return "red";
+    	public static Team getTeam(Minecraft mc) {
+    		ItemStack helmItem;
+    		if ((helmItem = mc.thePlayer.inventory.armorItemInSlot(3)) != null) {
+    			if (helmItem.getItem() == Items.skull) {
+    				cachedTeam = Team.RED;
+    				return cachedTeam;
     			}
-    			else if (Item.getIdFromItem(helmItem.getItem()) == 298) {
+    			else if (helmItem.getItem() == Items.leather_helmet) {
     				NBTTagCompound nbt = helmItem.getTagCompound();
     				int colorInt = nbt.getCompoundTag("display").getInteger("color");
-    				if (colorInt == 16711680) {
-    					cachedTeam = "red";
-    					return "red";
+    				if (colorInt == Team.RED.color) {
+    					cachedTeam = Team.RED;
+    					return cachedTeam;
     				}
-    				else if (colorInt == 255) {
-    					cachedTeam = "blue";
-    					return "blue";
+    				else if (colorInt == Team.BLUE.color) {
+    					cachedTeam = Team.BLUE;
+    					return cachedTeam;
     				}
-    				else {
-    					return "ffa";
-    				}
+    				else
+    					return Team.FFA;
     			}
     		}
-    		return "unknown";
+    		return Team.UNKNOWN;
     	}
     	
     	public static int getHelmetColor(Minecraft mc) {
-    		if (mc.thePlayer.inventory.armorItemInSlot(3) != null) {
-    			ItemStack helmItem = mc.thePlayer.inventory.armorItemInSlot(3);
-    			if (Item.getIdFromItem(helmItem.getItem()) == 298) {
+    		ItemStack helmItem;
+    		if ((helmItem = mc.thePlayer.inventory.armorItemInSlot(3)) != null) {
+    			if (helmItem.getItem() == Items.leather_helmet) {
     				NBTTagCompound nbt = helmItem.getTagCompound();
     				int colorInt = nbt.getCompoundTag("display").getInteger("color");
     				return colorInt;
     			}
     		}
-    		return 1337;
+    		return -1;
     	}
     	
     	public static void raygunParticle(Minecraft mc, Vec3 pos) {
@@ -189,6 +188,18 @@ public class War3 {
     			raygunParticle(mc, pos);
     			pos = pos.add(v);
     		}
+    	}
+    	
+    	public static enum Team {
+    		
+    		RED(0xff0000), BLUE(0x0000ff), FFA(0xff00ff), UNKNOWN(-1);
+    		
+    		public final int color;
+    		
+    		private Team(int c) {
+    			color = c;
+    		}
+    		
     	}
     	
 }

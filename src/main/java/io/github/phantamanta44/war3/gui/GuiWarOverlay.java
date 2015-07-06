@@ -1,6 +1,7 @@
 package io.github.phantamanta44.war3.gui;
 
 import io.github.phantamanta44.war3.War3;
+import io.github.phantamanta44.war3.War3.Team;
 import io.github.phantamanta44.war3.config.Config;
 import io.github.phantamanta44.war3.gui.ScopeHandler.Guns;
 
@@ -22,7 +23,6 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
-import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.FoodStats;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
@@ -70,7 +70,7 @@ public class GuiWarOverlay extends Gui {
 		
 		if (mc.thePlayer.inventory.getCurrentItem() != null) {
 			if (event.type == ElementType.CROSSHAIRS) {
-				if (ScopeHandler.isScopable(Item.getIdFromItem(mc.thePlayer.inventory.getCurrentItem().getItem()))) {
+				if (ScopeHandler.isScopable(mc.thePlayer.inventory.getCurrentItem().getItem())) {
 					if (this.mc.thePlayer.isPotionActive(Potion.moveSlowdown) && Config.useModels)
 						event.setCanceled(true);
 				}
@@ -244,12 +244,12 @@ public class GuiWarOverlay extends Gui {
         fr.drawStringWithShadow(timeLeft, 4, yBounds / 2 - (fr.FONT_HEIGHT / 2), 0xffeeeeff);
         
         // Map and gamemode + team
-        String teamColor = War3.getTeam(mc);
+        Team teamColor = War3.getTeam(mc);
         
-        if (teamColor == "red") {
+        if (teamColor == Team.RED) {
         	fr.drawStringWithShadow("RU", xBounds - fr.getStringWidth("RU") - 4, 2, 0xfff57e20);
         }
-        else if (teamColor == "blue") {
+        else if (teamColor == Team.BLUE) {
         	fr.drawStringWithShadow("US", xBounds - fr.getStringWidth("US") - 4, 2, 0xff147c9b);
         }
         else {

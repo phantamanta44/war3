@@ -15,13 +15,14 @@ import org.lwjgl.opengl.GL11;
 public class ScopeHandler
 {	
     
+	@Deprecated
     public static boolean isScopable(int i) {
-        for (ScopeHandler.Guns gun : ScopeHandler.Guns.values()) {
-        	if (i == gun.getId()) {
-        		return true;
-        	}
-        }
-        return false;
+		Item item = Item.getItemById(i);
+        return Guns.fromItem(item) != null;
+    }
+	
+	public static boolean isScopable(Item i) {
+        return Guns.fromItem(i) != null;
     }
     
     public static void renderMuzzleFlash(int par1, int par2, Minecraft mc) {
@@ -84,22 +85,26 @@ public class ScopeHandler
     	MINI(264, "minigun"),
     	RAYG(352, "raygun");
     	
-    	private int id;
+    	private Item item;
     	
     	private Guns(int arg1, String arg2)
     	{
-    		id = arg1;
+    		item = Item.getItemById(arg1);
     	}
     	
+    	@Deprecated
     	public int getId()
     	{
-    		return id;
+    		return Item.getIdFromItem(item);
+    	}
+    	
+    	public Item getItem() {
+    		return item;
     	}
     	
     	public static Guns fromItem(Item i) {
-    		int id = Item.getIdFromItem(i);
     		for (Guns g : values()) {
-    			if (id == g.getId())
+    			if (i == g.item)
     				return g;
     		}
     		return null;

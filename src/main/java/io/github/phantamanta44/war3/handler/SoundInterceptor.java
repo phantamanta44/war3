@@ -2,6 +2,7 @@ package io.github.phantamanta44.war3.handler;
 
 import io.github.phantamanta44.war3.SoundType;
 import io.github.phantamanta44.war3.War3;
+import io.github.phantamanta44.war3.War3.Team;
 import io.github.phantamanta44.war3.render.model.BoltActionItemRenderer;
 import io.github.phantamanta44.war3.render.model.PumpedItemRenderer;
 import net.minecraft.client.Minecraft;
@@ -17,13 +18,11 @@ public class SoundInterceptor {
 		Minecraft mc = Minecraft.getMinecraft();
 		final String path = event.sound.getSoundLocation().getResourcePath();
 		if (path.equals("ambient.cave.cave")) {
-			String team = War3.cachedTeam;
-			if (team.equals("red")) {
+			Team team = War3.cachedTeam;
+			if (team == Team.RED)
 				mc.theWorld.playSoundAtEntity(mc.thePlayer, SoundType.RESPAWNRED.getLoc(), 1.0F, 1.0F);
-			}
-			else if (team.equals("blue")) {
+			else if (team == Team.BLUE)
 				mc.theWorld.playSoundAtEntity(mc.thePlayer, SoundType.RESPAWNBLUE.getLoc(), 1.0F, 1.0F);
-			}
 			else
 				mc.theWorld.playSoundAtEntity(mc.thePlayer, SoundType.RESPAWNRED.getLoc(), 1.0F, 1.0F);
 		}
