@@ -72,10 +72,6 @@ public class GuiWarOverlay extends Gui {
 		int yBounds = sc.getScaledHeight();
 		FontRenderer fr = this.mc.fontRendererObj;
 		
-		fr.drawStringWithShadow(Boolean.toString(attachmentsEnded), 18, 18, 0xffffffff);
-		fr.drawStringWithShadow(Boolean.toString(((ObjModelItemRenderer)MinecraftForgeClient.getItemRenderer(new ItemStack(Items.wooden_axe), ItemRenderType.EQUIPPED_FIRST_PERSON)).isFullyScopedIn()), 18, 28, 0xffffffff);
-		fr.drawStringWithShadow(Boolean.toString(StraightPullBoltItemRenderer.isFullyScopedIn()), 18, 38, 0xffffffff);
-		
 		if (typesToCancel.contains(event.type)) {
 			event.setCanceled(true);
 			if (event.type == ElementType.BOSSHEALTH)

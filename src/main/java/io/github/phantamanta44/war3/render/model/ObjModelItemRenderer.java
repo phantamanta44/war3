@@ -145,7 +145,6 @@ public class ObjModelItemRenderer implements IItemRenderer {
 	}
 	
 	public static boolean isFullyScopedIn() {
-		Minecraft.getMinecraft().fontRendererObj.drawStringWithShadow("" + (Math.abs(scaleMult - 1.0)), 18, 48, 0xffffffff);
 		return isSettled && (Math.abs(scaleMult - 1.3) < 0.1);
 	}
 
