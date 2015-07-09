@@ -6,6 +6,7 @@ import io.github.phantamanta44.war3.config.Config;
 import io.github.phantamanta44.war3.gui.ScopeHandler.Guns;
 import io.github.phantamanta44.war3.handler.WorldRenderHandler;
 import io.github.phantamanta44.war3.render.model.ObjModelItemRenderer;
+import io.github.phantamanta44.war3.render.model.StraightPullBoltItemRenderer;
 import io.github.phantamanta44.war3.render.model.attach.IAttachmentRenderer;
 import io.github.phantamanta44.war3.render.model.attach.IScopeAttachment;
 
@@ -70,6 +71,10 @@ public class GuiWarOverlay extends Gui {
 		int xBounds = sc.getScaledWidth();
 		int yBounds = sc.getScaledHeight();
 		FontRenderer fr = this.mc.fontRendererObj;
+		
+		fr.drawStringWithShadow(Boolean.toString(attachmentsEnded), 18, 18, 0xffffffff);
+		fr.drawStringWithShadow(Boolean.toString(((ObjModelItemRenderer)MinecraftForgeClient.getItemRenderer(new ItemStack(Items.wooden_axe), ItemRenderType.EQUIPPED_FIRST_PERSON)).isFullyScopedIn()), 18, 28, 0xffffffff);
+		fr.drawStringWithShadow(Boolean.toString(StraightPullBoltItemRenderer.isFullyScopedIn()), 18, 38, 0xffffffff);
 		
 		if (typesToCancel.contains(event.type)) {
 			event.setCanceled(true);
