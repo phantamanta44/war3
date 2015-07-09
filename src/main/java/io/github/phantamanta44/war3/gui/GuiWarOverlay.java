@@ -155,7 +155,7 @@ public class GuiWarOverlay extends Gui {
 					}
 					attachmentsEnded = true;
 				}
-				if (prevRenderer != renderer) {
+				if (prevRenderer != renderer && !attachmentsEnded) {
 					WorldRenderHandler.resetFov();
 					if (prevRenderer instanceof ObjModelItemRenderer) {
 						Collection<IAttachmentRenderer> attachments = ((ObjModelItemRenderer)prevRenderer).getAttachments();
@@ -164,6 +164,7 @@ public class GuiWarOverlay extends Gui {
 								((IScopeAttachment)attach).onScopeEnd(mc);
 						}
 					}
+					attachmentsEnded = true;
 				}
 				prevRenderer = renderer;
 			} catch (NullPointerException ex) {
