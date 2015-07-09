@@ -134,8 +134,8 @@ public class GuiWarOverlay extends Gui {
 			
 			try {
 				IItemRenderer renderer = MinecraftForgeClient.getItemRenderer(this.mc.thePlayer.getCurrentEquippedItem(), ItemRenderType.EQUIPPED_FIRST_PERSON);
-				if (Config.useModels && renderer instanceof ObjModelItemRenderer && mc.thePlayer.getActivePotionEffect(Potion.moveSlowdown) != null && ((ObjModelItemRenderer)renderer).isScoped()) {
-					if (ObjModelItemRenderer.isFullyScopedIn() && mc.gameSettings.thirdPersonView == 0) {
+				if (Config.useModels && renderer instanceof ObjModelItemRenderer && mc.thePlayer.getActivePotionEffect(Potion.moveSlowdown) != null) {
+					if (((ObjModelItemRenderer)renderer).isScoped() && ObjModelItemRenderer.isFullyScopedIn() && mc.gameSettings.thirdPersonView == 0) {
 						Collection<IAttachmentRenderer> attachments = ((ObjModelItemRenderer)renderer).getAttachments();
 						for (IAttachmentRenderer attach : attachments) {
 							if (attach instanceof IScopeAttachment)
@@ -165,8 +165,9 @@ public class GuiWarOverlay extends Gui {
 						}
 					}
 					attachmentsEnded = true;
+					prevRenderer = renderer;
 				}
-				prevRenderer = renderer;
+				mc.fontRendererObj.drawString(Boolean.toString(attachmentsEnded), 18, 18, 0xffffffff);
 			} catch (NullPointerException ex) {
 				if (!attachmentsEnded) {
 					WorldRenderHandler.resetFov();
