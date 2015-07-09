@@ -167,7 +167,6 @@ public class GuiWarOverlay extends Gui {
 					attachmentsEnded = true;
 					prevRenderer = renderer;
 				}
-				mc.fontRendererObj.drawString(Boolean.toString(attachmentsEnded), 18, 18, 0xffffffff);
 			} catch (NullPointerException ex) {
 				if (!attachmentsEnded) {
 					WorldRenderHandler.resetFov();
