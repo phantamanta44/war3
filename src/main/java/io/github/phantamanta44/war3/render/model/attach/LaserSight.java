@@ -40,7 +40,7 @@ public class LaserSight implements IAttachmentRenderer {
 		GL11.glPopMatrix();
 		Vec3 v = mc.thePlayer.getLookVec();
 		Vec3 pos = mc.thePlayer.getPositionVector().add(new Vec3(0, 1.6, 0)).add(v);
-		for (int i = 0; i < 32 && mc.theWorld.isAirBlock(new BlockPos(pos)); i++)
+		for (int i = 0; i < 32 && !mc.theWorld.getBlockState(new BlockPos(pos)).getBlock().isSolidFullCube(); i++)
 			pos = pos.add(v);
 		pos = pos.subtract(v);
 		FXWisp wisp = new FXWisp(mc.theWorld, pos.xCoord, pos.yCoord, pos.zCoord, 0.08F, 0.6F, 0F, 0F, false, false, 0.08F);
