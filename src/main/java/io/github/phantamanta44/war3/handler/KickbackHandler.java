@@ -39,7 +39,6 @@ public class KickbackHandler {
 	}
 	
 	public static void tryKickback(String path, Minecraft mc) {
-		System.out.println(path);
 		Item i;
 		try {
 			i = mc.thePlayer.inventory.getCurrentItem().getItem();
