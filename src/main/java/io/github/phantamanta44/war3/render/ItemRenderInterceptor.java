@@ -11,11 +11,7 @@ import io.github.phantamanta44.war3.render.model.RaygunItemRenderer;
 import io.github.phantamanta44.war3.render.model.RevolverItemRenderer;
 import io.github.phantamanta44.war3.render.model.StraightPullBoltItemRenderer;
 import io.github.phantamanta44.war3.render.model.attach.BallisticScope;
-import io.github.phantamanta44.war3.render.model.attach.IAttachmentRenderer;
-import io.github.phantamanta44.war3.render.model.attach.IScopeAttachment;
-
-import java.util.Collection;
-
+import io.github.phantamanta44.war3.render.model.attach.LaserSight;
 import net.minecraft.client.Minecraft;
 import net.minecraft.init.Items;
 import net.minecraft.potion.Potion;
@@ -119,16 +115,16 @@ public class ItemRenderInterceptor {
     	
     	MinecraftForgeClient.registerItemRenderer(Items.wooden_shovel, new ClippedItemRenderer(
     			new ResourceLocation("war3", "model/obj/pistol1.obj"),
-    			new ResourceLocation("war3", "textures/model/mp443.png"), "Mag.020"));
+    			new ResourceLocation("war3", "textures/model/mp443.png"), "Mag.020").addAttachment(new LaserSight(0, 1.5, -18.75)));
     	MinecraftForgeClient.registerItemRenderer(Items.stone_shovel, new ClippedItemRenderer(
     			new ResourceLocation("war3", "model/obj/pistol2.obj"),
-    			new ResourceLocation("war3", "textures/model/m9.png"), "Mag.021"));
+    			new ResourceLocation("war3", "textures/model/m9.png"), "Mag.021").addAttachment(new LaserSight(0, 1.39, -19.2)));
     	MinecraftForgeClient.registerItemRenderer(Items.iron_shovel, new RevolverItemRenderer(
     			new ResourceLocation("war3", "model/obj/pistol3.obj"),
     			new ResourceLocation("war3", "textures/model/mp412.png"), "Chamber.001", 2.875));
     	MinecraftForgeClient.registerItemRenderer(Items.diamond_shovel, new ClippedItemRenderer(
     			new ResourceLocation("war3", "model/obj/pistol4.obj"),
-    			new ResourceLocation("war3", "textures/model/deagle.png"), "Mag.024"));
+    			new ResourceLocation("war3", "textures/model/deagle.png"), "Mag.024").addAttachment(new LaserSight(0, 0.06, -20.9)));
     	MinecraftForgeClient.registerItemRenderer(Items.leather, new ClippedItemRenderer(
     			new ResourceLocation("war3", "model/obj/pistol5.obj"),
     			new ResourceLocation("war3", "textures/model/m9.png"), "Mag.023"));
