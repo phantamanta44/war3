@@ -6,12 +6,14 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.RenderHackThing;
 import net.minecraft.client.renderer.entity.RenderPlayer;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraftforge.client.event.FOVUpdateEvent;
 import net.minecraftforge.client.event.RenderLivingEvent;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class WorldRenderHandler {
 
+	private static float targetFovMod = 1.0F;
 	private Minecraft mc;
 	
 	public WorldRenderHandler(Minecraft minecraft) {
@@ -29,6 +31,19 @@ public class WorldRenderHandler {
 	@SubscribeEvent
 	public void onRenderWorldLast(RenderWorldLastEvent event) {
 		ParticleRenderDispatcher.dispatch();
+	}
+	
+	@SubscribeEvent
+	public void onFovUpdate(FOVUpdateEvent event) {
+		event.newfov = event.fov * targetFovMod;
+	}
+	
+	public static void setFovMultiplier(float mult) {
+		targetFovMod = mult;
+	}
+	
+	public static void resetFov() {
+		targetFovMod = 1.0F;
 	}
 	
 }

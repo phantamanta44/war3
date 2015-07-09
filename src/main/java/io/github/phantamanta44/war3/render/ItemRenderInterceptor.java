@@ -11,8 +11,14 @@ import io.github.phantamanta44.war3.render.model.RaygunItemRenderer;
 import io.github.phantamanta44.war3.render.model.RevolverItemRenderer;
 import io.github.phantamanta44.war3.render.model.StraightPullBoltItemRenderer;
 import io.github.phantamanta44.war3.render.model.attach.BallisticScope;
+import io.github.phantamanta44.war3.render.model.attach.IAttachmentRenderer;
+import io.github.phantamanta44.war3.render.model.attach.IScopeAttachment;
+
+import java.util.Collection;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.init.Items;
+import net.minecraft.potion.Potion;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.IItemRenderer;
@@ -39,12 +45,16 @@ public class ItemRenderInterceptor {
 		if (Minecraft.getMinecraft().gameSettings.thirdPersonView == 0 && this.mc.thePlayer.getCurrentEquippedItem() != null && this.mc.thePlayer.getCurrentEquippedItem().getItem() != null) {
 			IItemRenderer renderer = MinecraftForgeClient.getItemRenderer(this.mc.thePlayer.getCurrentEquippedItem(), ItemRenderType.EQUIPPED_FIRST_PERSON);
 			if (renderer != null) {
+				if (event.isCancelable())
+					event.setCanceled(true);
+				if (renderer instanceof ObjModelItemRenderer && mc.thePlayer.getActivePotionEffect(Potion.moveSlowdown) != null) {
+					if (ObjModelItemRenderer.isFullyScopedIn() && ((ObjModelItemRenderer)renderer).isScoped())
+						return;
+				}
 				double light = Math.max((double)mc.theWorld.getCombinedLight(new BlockPos(mc.thePlayer.posX, mc.thePlayer.posY + mc.thePlayer.eyeHeight, mc.thePlayer.posZ), 0) / 15728848, 0.1);
 				GL11.glColor3d(light, light, light);
 				renderer.renderItem(ItemRenderType.EQUIPPED_FIRST_PERSON, this.mc.thePlayer.getCurrentEquippedItem());
 				GL11.glColor3d(1.0, 1.0, 1.0);
-				if (event.isCancelable())
-					event.setCanceled(true);
 			}
 		}
 	}

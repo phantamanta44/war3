@@ -3,7 +3,9 @@ package io.github.phantamanta44.war3.render.model;
 import io.github.phantamanta44.war3.model.AdvancedModelLoader;
 import io.github.phantamanta44.war3.model.IModelCustom;
 import io.github.phantamanta44.war3.render.model.attach.IAttachmentRenderer;
+import io.github.phantamanta44.war3.render.model.attach.IScopeAttachment;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -20,6 +22,7 @@ public class ObjModelItemRenderer implements IItemRenderer {
 	protected static final double HALF_PI = Math.PI / 180;
 	protected static final ResourceLocation glassTex = new ResourceLocation("war3", "textures/model/scope-dirt.png");
 	protected static double xOffset, zOffset, scaleMult = 0;
+	protected static boolean isSettled = true;
 	protected IModelCustom model;
 	protected Map<String, IAttachmentRenderer> attach = new HashMap<String, IAttachmentRenderer>();
 	protected ResourceLocation texture;
@@ -38,6 +41,10 @@ public class ObjModelItemRenderer implements IItemRenderer {
 	public ObjModelItemRenderer removeAttachment(String name) {
 		attach.remove(name);
 		return this;
+	}
+	
+	public Collection<IAttachmentRenderer> getAttachments() {
+		return attach.values();
 	}
 	
 	@Override
@@ -108,19 +115,45 @@ public class ObjModelItemRenderer implements IItemRenderer {
 	}
 
 	protected static void inchStatics(double xOffsetTar, double zOffsetTar, double scaleMultTar) {
-		if (xOffset != xOffsetTar)
+		boolean settled = true;
+		
+		if (xOffset != xOffsetTar) {
 			xOffset += (xOffsetTar - xOffset) / 2.71;
+			settled = false;
+		}
 		
-		if (zOffset != zOffsetTar)
+		if (zOffset != zOffsetTar) {
 			zOffset += (zOffsetTar - zOffset) / 2.71;
+			settled = false;
+		}
 		
-		if (scaleMult != scaleMultTar)
+		if (scaleMult != scaleMultTar) {
 			scaleMult += (scaleMultTar - scaleMult) / 2.71;
+			settled = false;
+		}
+		
+		isSettled = settled;
 	}
 	
 	protected void renderAttachments() {
 		for (IAttachmentRenderer renderer : attach.values())
 			renderer.render();
+	}
+	
+	public static boolean isSettled() {
+		return isSettled;
+	}
+	
+	public static boolean isFullyScopedIn() {
+		return isSettled && scaleMult != 1.0;
+	}
+
+	public boolean isScoped() {
+		for (IAttachmentRenderer renderer : attach.values()) {
+			if (renderer instanceof IScopeAttachment)
+				return true;
+		}
+		return false;
 	}
 	
 }

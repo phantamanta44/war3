@@ -4,8 +4,13 @@ import io.github.phantamanta44.war3.War3;
 import io.github.phantamanta44.war3.War3.Team;
 import io.github.phantamanta44.war3.config.Config;
 import io.github.phantamanta44.war3.gui.ScopeHandler.Guns;
+import io.github.phantamanta44.war3.handler.WorldRenderHandler;
+import io.github.phantamanta44.war3.render.model.ObjModelItemRenderer;
+import io.github.phantamanta44.war3.render.model.attach.IAttachmentRenderer;
+import io.github.phantamanta44.war3.render.model.attach.IScopeAttachment;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -23,9 +28,11 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
-import net.minecraft.util.BlockPos;
 import net.minecraft.util.FoodStats;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.client.IItemRenderer;
+import net.minecraftforge.client.IItemRenderer.ItemRenderType;
+import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
@@ -44,6 +51,8 @@ public class GuiWarOverlay extends Gui {
 	public static int shootTicks = 0;
 	
     private int sprintBarAnimStatus;
+    private boolean attachmentsEnded = true;
+    private IItemRenderer prevRenderer;
 	
 	public GuiWarOverlay(Minecraft minecraft) {
 		mc = minecraft;
@@ -121,10 +130,59 @@ public class GuiWarOverlay extends Gui {
 			GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 			GL11.glAlphaFunc(GL11.GL_GREATER, 0.1F);
 			
+			Tessellator tess = Tessellator.getInstance();
+			
+			try {
+				IItemRenderer renderer = MinecraftForgeClient.getItemRenderer(this.mc.thePlayer.getCurrentEquippedItem(), ItemRenderType.EQUIPPED_FIRST_PERSON);
+				if (Config.useModels && renderer instanceof ObjModelItemRenderer && mc.thePlayer.getActivePotionEffect(Potion.moveSlowdown) != null && ((ObjModelItemRenderer)renderer).isScoped()) {
+					if (ObjModelItemRenderer.isFullyScopedIn() && mc.gameSettings.thirdPersonView == 0) {
+						Collection<IAttachmentRenderer> attachments = ((ObjModelItemRenderer)renderer).getAttachments();
+						for (IAttachmentRenderer attach : attachments) {
+							if (attach instanceof IScopeAttachment)
+								((IScopeAttachment)attach).renderOrthoScope(mc, tess, xBounds, yBounds);
+						}
+					}
+					attachmentsEnded = false;
+				}
+				else if (!attachmentsEnded) {
+					WorldRenderHandler.resetFov();
+					if (renderer instanceof ObjModelItemRenderer) {
+						Collection<IAttachmentRenderer> attachments = ((ObjModelItemRenderer)renderer).getAttachments();
+						for (IAttachmentRenderer attach : attachments) {
+							if (attach instanceof IScopeAttachment)
+								((IScopeAttachment)attach).onScopeEnd(mc);
+						}
+					}
+					attachmentsEnded = true;
+				}
+				if (prevRenderer != renderer) {
+					WorldRenderHandler.resetFov();
+					if (prevRenderer instanceof ObjModelItemRenderer) {
+						Collection<IAttachmentRenderer> attachments = ((ObjModelItemRenderer)prevRenderer).getAttachments();
+						for (IAttachmentRenderer attach : attachments) {
+							if (attach instanceof IScopeAttachment)
+								((IScopeAttachment)attach).onScopeEnd(mc);
+						}
+					}
+				}
+				prevRenderer = renderer;
+			} catch (NullPointerException ex) {
+				if (!attachmentsEnded) {
+					WorldRenderHandler.resetFov();
+					if (prevRenderer instanceof ObjModelItemRenderer) {
+						Collection<IAttachmentRenderer> attachments = ((ObjModelItemRenderer)prevRenderer).getAttachments();
+						for (IAttachmentRenderer attach : attachments) {
+							if (attach instanceof IScopeAttachment)
+								((IScopeAttachment)attach).onScopeEnd(mc);
+						}
+					}
+					attachmentsEnded = true;
+				}
+			}
+			
 			this.renderBloodOverlay(this.mc.thePlayer.getHealth() / this.mc.thePlayer.getMaxHealth(), xBounds, yBounds);
 	        
 	        mc.getTextureManager().bindTexture(mainOverlay);
-	        Tessellator tess = Tessellator.getInstance();
 	        WorldRenderer wr = tess.getWorldRenderer();
 	        wr.startDrawingQuads();
 	        wr.addVertexWithUV(0.0D, (double)yBounds, -90.0D, 0.0D, 1.0D);
