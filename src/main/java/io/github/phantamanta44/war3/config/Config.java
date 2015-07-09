@@ -31,7 +31,7 @@ public class Config {
         showHotbar = config.getBoolean("renderHotbar", CAT_HUD, false, "Show hotbar?");
         altReticle = config.getBoolean("altReticle", CAT_HUD, true, "Alternate reticles?");
         varReticle = config.getBoolean("varReticle", CAT_HUD, true, "Variable-size reticles?");
-        mentionRegex = config.getStringList("mentionFilters", CAT_HUD, new String[] { "^(?!.*(<|«)?.*%NAME.*(>|»)).*%NAME.*$" }, "Mention regex filters");
+        mentionRegex = config.getStringList("mentionFilters", CAT_HUD, new String[] { "^(?!.*%NAME\\s(»|killed)).*%NAME.*$" }, "Mention regex filters");
         useModels = config.getBoolean("renderModels", CAT_VISUAL, true, "Render models?");
         doKickback = config.getBoolean("doKickback", CAT_GAME, false, "Camera recoil?");
         beamMode = config.getBoolean("beamMode", CAT_EXTRA, false, "Bass cannon?");
