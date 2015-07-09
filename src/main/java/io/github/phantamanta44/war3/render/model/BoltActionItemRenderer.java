@@ -68,6 +68,8 @@ public class BoltActionItemRenderer extends ClippedItemRenderer {
 		mc.renderEngine.bindTexture(texture);
 		model.renderAllExcept(clipName, boltName);
 		
+		renderAttachments();
+		
 		GL11.glPopMatrix();
 		GL11.glPushMatrix();
 		

@@ -66,6 +66,8 @@ public class ClippedItemRenderer extends ObjModelItemRenderer {
 		mc.renderEngine.bindTexture(texture);
 		model.renderAllExcept(clipName);
 		
+		renderAttachments();
+		
 		GL11.glRotated(-clip, 1.0, 0.0, -1.0);
 		GL11.glTranslated(0.0, clip, 0.0);
 		if (clipTar == 0 || clip != clipTar)

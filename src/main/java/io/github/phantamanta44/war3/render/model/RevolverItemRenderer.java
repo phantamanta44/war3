@@ -65,6 +65,8 @@ public class RevolverItemRenderer extends ObjModelItemRenderer {
 		mc.renderEngine.bindTexture(texture);
 		model.renderAllExcept(chamName);
 		
+		renderAttachments();
+		
 		GL11.glPopMatrix();
 		GL11.glPushMatrix();
 		

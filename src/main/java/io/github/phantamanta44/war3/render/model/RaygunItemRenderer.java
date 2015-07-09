@@ -1,26 +1,30 @@
 package io.github.phantamanta44.war3.render.model;
 
-import io.github.phantamanta44.war3.handler.VazkiiTickHandler;
+import io.github.phantamanta44.war3.model.AdvancedModelLoader;
+import io.github.phantamanta44.war3.model.IModelCustom;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.client.IItemRenderer;
 
 import org.lwjgl.opengl.GL11;
 
-public class StraightPullBoltItemRenderer extends BoltActionItemRenderer {
-	
-	public StraightPullBoltItemRenderer(ResourceLocation path, ResourceLocation texMap, String clipObj, String boltObj) {
-		super(path, texMap, clipObj, boltObj, 0);
-	}
+public class RaygunItemRenderer extends ObjModelItemRenderer {
 
+	protected String scope;
+	
+	public RaygunItemRenderer(ResourceLocation path, ResourceLocation texMap, String scopeName) {
+		super (path, texMap);
+		scope = scopeName;
+	}
+	
 	@Override
 	public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
 		
 		float scaleMultTar = 1;
 		Minecraft mc = Minecraft.getMinecraft();
-		
-		clipTar = item.getDisplayName().toLowerCase().contains("reload") ? -32 : 0;
 		
 		double facing = (double)(mc.thePlayer.rotationYaw + 90) % 360;
 		double pitch = (double)(mc.thePlayer.rotationPitch + 140) % 360 - 140;
@@ -58,27 +62,15 @@ public class StraightPullBoltItemRenderer extends BoltActionItemRenderer {
 		GL11.glTranslated(xOffset, 0.0, zOffset);
 		GL11.glRotated(-facing + 90, 0.0, 1.0, 0.0);
 		GL11.glRotated(pitch, 1.0, 0.0, 0.0);
-		GL11.glRotated(clip, 1.0, 0.0, -1.0);
 		GL11.glScaled(0.04 * scaleMult, 0.04 * scaleMult, 0.04 * scaleMult);
+		
 		mc.renderEngine.bindTexture(texture);
-		model.renderAllExcept(clipName, boltName);
+		model.renderAllExcept(scope);
 		
-		renderAttachments();
-		
-		GL11.glTranslated(0, 0, bolt);
-		model.renderOnly(boltName);
-		
-		GL11.glTranslated(0, 0, -bolt);
-		GL11.glRotated(-clip, 1.0, 0.0, -1.0);
-		GL11.glTranslated(0.0, clip, 0.0);
-		if (clipTar == 0 || clip != clipTar)
-			model.renderOnly(clipName);
+		mc.renderEngine.bindTexture(glassTex);
+		model.renderOnly(scope);
 		
 		GL11.glPopMatrix();
-	}
-	
-	public static void setWorking(boolean w) {
-		boltTar = w ? -7.6 : 0;
 	}
 	
 }

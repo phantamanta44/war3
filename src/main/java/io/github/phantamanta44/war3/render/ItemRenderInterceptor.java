@@ -7,10 +7,13 @@ import io.github.phantamanta44.war3.render.model.L96ItemRenderer;
 import io.github.phantamanta44.war3.render.model.ObjModelItemRenderer;
 import io.github.phantamanta44.war3.render.model.P90ItemRenderer;
 import io.github.phantamanta44.war3.render.model.PumpedItemRenderer;
+import io.github.phantamanta44.war3.render.model.RaygunItemRenderer;
 import io.github.phantamanta44.war3.render.model.RevolverItemRenderer;
 import io.github.phantamanta44.war3.render.model.StraightPullBoltItemRenderer;
+import io.github.phantamanta44.war3.render.model.attach.BallisticScope;
 import net.minecraft.client.Minecraft;
 import net.minecraft.init.Items;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.IItemRenderer;
 import net.minecraftforge.client.IItemRenderer.ItemRenderType;
@@ -18,6 +21,8 @@ import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.client.event.RenderHandEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+
+import org.lwjgl.opengl.GL11;
 
 public class ItemRenderInterceptor {
 
@@ -34,7 +39,10 @@ public class ItemRenderInterceptor {
 		if (Minecraft.getMinecraft().gameSettings.thirdPersonView == 0 && this.mc.thePlayer.getCurrentEquippedItem() != null && this.mc.thePlayer.getCurrentEquippedItem().getItem() != null) {
 			IItemRenderer renderer = MinecraftForgeClient.getItemRenderer(this.mc.thePlayer.getCurrentEquippedItem(), ItemRenderType.EQUIPPED_FIRST_PERSON);
 			if (renderer != null) {
+				double light = Math.max((double)mc.theWorld.getCombinedLight(new BlockPos(mc.thePlayer.posX, mc.thePlayer.posY + mc.thePlayer.eyeHeight, mc.thePlayer.posZ), 0) / 15728848, 0.1);
+				GL11.glColor3d(light, light, light);
 				renderer.renderItem(ItemRenderType.EQUIPPED_FIRST_PERSON, this.mc.thePlayer.getCurrentEquippedItem());
+				GL11.glColor3d(1.0, 1.0, 1.0);
 				if (event.isCancelable())
 					event.setCanceled(true);
 			}
@@ -63,19 +71,19 @@ public class ItemRenderInterceptor {
     	
     	MinecraftForgeClient.registerItemRenderer(Items.wooden_axe, new BoltActionItemRenderer(
     			new ResourceLocation("war3", "model/obj/sniper1.obj"),
-    			new ResourceLocation("war3", "textures/model/sv98.png"), "Mag.018", "Bolt.019", 3.05));
+    			new ResourceLocation("war3", "textures/model/sv98.png"), "Mag.018", "Bolt.019", 3.05).addAttachment(new BallisticScope(0, 4.64, -7.53)));
     	MinecraftForgeClient.registerItemRenderer(Items.stone_axe, new ClippedItemRenderer(
     			new ResourceLocation("war3", "model/obj/sniper2.obj"),
     			new ResourceLocation("war3", "textures/model/mk11.png"), "Mag.008"));
     	MinecraftForgeClient.registerItemRenderer(Items.iron_axe, new BoltActionItemRenderer(
     			new ResourceLocation("war3", "model/obj/sniper3.obj"),
-    			new ResourceLocation("war3", "textures/model/m98b.png"), "Mag.009", "Bolt.011", -0.5));
+    			new ResourceLocation("war3", "textures/model/m98b.png"), "Mag.009", "Bolt.011", -0.5).addAttachment(new BallisticScope(0, 2.45, -10.8)));
     	MinecraftForgeClient.registerItemRenderer(Items.diamond_axe, new StraightPullBoltItemRenderer(
     			new ResourceLocation("war3", "model/obj/sniper4.obj"),
     			new ResourceLocation("war3", "textures/model/m39.png"), "Mag.011", "Bolt.012"));
     	MinecraftForgeClient.registerItemRenderer(Items.bowl, new L96ItemRenderer(
     			new ResourceLocation("war3", "model/obj/sniper5.obj"),
-    			new ResourceLocation("war3", "textures/model/l96.png"), "Mag.019", "Bolt2.002", "Bolt.020", 2.48));
+    			new ResourceLocation("war3", "textures/model/l96.png"), "Mag.019", "Bolt2.002", "Bolt.020", 2.48).addAttachment(new BallisticScope(0, 3.74, -8.67)));
     	MinecraftForgeClient.registerItemRenderer(Items.paper, new StraightPullBoltItemRenderer(
     			new ResourceLocation("war3", "model/obj/sniper6.obj"),
     			new ResourceLocation("war3", "textures/model/sks.png"), "Mag.016", "Bolt.017"));
@@ -146,9 +154,9 @@ public class ItemRenderInterceptor {
     	MinecraftForgeClient.registerItemRenderer(Items.diamond, new ClippedItemRenderer(
     			new ResourceLocation("war3", "model/obj/minigun.obj"),
     			new ResourceLocation("war3", "textures/model/m249.png"), "MagBox"));
-    	MinecraftForgeClient.registerItemRenderer(Items.bone, new ObjModelItemRenderer(
+    	MinecraftForgeClient.registerItemRenderer(Items.bone, new RaygunItemRenderer(
     			new ResourceLocation("war3", "model/obj/raygun.obj"),
-    			new ResourceLocation("war3", "textures/model/railgun-dual.png")));
+    			new ResourceLocation("war3", "textures/model/railgun-dual.png"), "solid_glass"));
     }
 	
 	public static void toolRenderFix() {

@@ -2,6 +2,11 @@ package io.github.phantamanta44.war3.render.model;
 
 import io.github.phantamanta44.war3.model.AdvancedModelLoader;
 import io.github.phantamanta44.war3.model.IModelCustom;
+import io.github.phantamanta44.war3.render.model.attach.IAttachmentRenderer;
+
+import java.util.HashMap;
+import java.util.Map;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
@@ -13,14 +18,26 @@ import org.lwjgl.opengl.GL11;
 public class ObjModelItemRenderer implements IItemRenderer {
 
 	protected static final double HALF_PI = Math.PI / 180;
+	protected static final ResourceLocation glassTex = new ResourceLocation("war3", "textures/model/scope-dirt.png");
 	protected static double xOffset, zOffset, scaleMult = 0;
 	protected IModelCustom model;
+	protected Map<String, IAttachmentRenderer> attach = new HashMap<String, IAttachmentRenderer>();
 	protected ResourceLocation texture;
 	
 	public ObjModelItemRenderer(ResourceLocation path, ResourceLocation texMap) {
 		model = AdvancedModelLoader.loadModel(path);
 		texture = texMap;
 		model.renderAll();
+	}
+	
+	public ObjModelItemRenderer addAttachment(IAttachmentRenderer renderer) {
+		attach.put(renderer.getName(), renderer);
+		return this;
+	}
+	
+	public ObjModelItemRenderer removeAttachment(String name) {
+		attach.remove(name);
+		return this;
 	}
 	
 	@Override
@@ -85,6 +102,8 @@ public class ObjModelItemRenderer implements IItemRenderer {
 		mc.renderEngine.bindTexture(texture);
 		model.renderAll();
 		
+		renderAttachments();
+		
 		GL11.glPopMatrix();
 	}
 
@@ -97,6 +116,11 @@ public class ObjModelItemRenderer implements IItemRenderer {
 		
 		if (scaleMult != scaleMultTar)
 			scaleMult += (scaleMultTar - scaleMult) / 2.71;
+	}
+	
+	protected void renderAttachments() {
+		for (IAttachmentRenderer renderer : attach.values())
+			renderer.render();
 	}
 	
 }

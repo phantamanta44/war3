@@ -63,6 +63,8 @@ public class PumpedItemRenderer extends ObjModelItemRenderer {
 		mc.renderEngine.bindTexture(texture);
 		model.renderAllExcept(pumpName);
 		
+		renderAttachments();
+		
 		GL11.glTranslated(0.0, 0.0, -pump);
 		model.renderOnly(pumpName);
 		

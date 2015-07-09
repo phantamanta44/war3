@@ -62,6 +62,8 @@ public class P90ItemRenderer extends ClippedItemRenderer {
 		mc.renderEngine.bindTexture(texture);
 		model.renderAllExcept(clipName);
 		
+		renderAttachments();
+		
 		GL11.glRotated(-clip, 1.0, 0.0, 0.0);
 		GL11.glTranslated(0.0, 0.0, clip);
 		model.renderOnly(clipName);

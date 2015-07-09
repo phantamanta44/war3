@@ -66,6 +66,8 @@ public class L96ItemRenderer extends BoltActionItemRenderer {
 		String boltPart = "Bolt.020";
 		model.renderAllExcept(clipName, boltName, boltPart);
 		
+		renderAttachments();
+		
 		GL11.glTranslated(0, 0, bolt / 3);
 		model.renderOnly(boltPart);
 		
