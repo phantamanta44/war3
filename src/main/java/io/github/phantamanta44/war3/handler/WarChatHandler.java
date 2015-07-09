@@ -90,8 +90,8 @@ public class WarChatHandler {
 		
 		// Mentions
 		for (String s : Config.mentionRegex) {
-			String rx = s.replaceAll("%NAME", mc.getSession().getUsername());
-			if (msg.matches(rx)) {
+			String rx = s.replaceAll("%NAME", mc.getSession().getUsername()).toLowerCase();
+			if (msg.toLowerCase().matches(rx)) {
 				event.message = event.message.setChatStyle(new ChatStyle().setItalic(true));
 				SoundType.playSound(mc, SoundType.CHATTAG);
 			}
