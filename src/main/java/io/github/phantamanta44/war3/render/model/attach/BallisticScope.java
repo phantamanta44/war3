@@ -1,15 +1,12 @@
 package io.github.phantamanta44.war3.render.model.attach;
 
-import io.github.phantamanta44.war3.handler.VazkiiTickHandler;
 import io.github.phantamanta44.war3.handler.WorldRenderHandler;
 import io.github.phantamanta44.war3.model.AdvancedModelLoader;
 import io.github.phantamanta44.war3.model.IModelCustom;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.EntityRenderer;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 
 import org.lwjgl.opengl.GL11;
 

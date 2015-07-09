@@ -135,6 +135,8 @@ public class GuiWarOverlay extends Gui {
 			
 			try {
 				IItemRenderer renderer = MinecraftForgeClient.getItemRenderer(this.mc.thePlayer.getCurrentEquippedItem(), ItemRenderType.EQUIPPED_FIRST_PERSON);
+				if (renderer == null)
+					throw new NullPointerException();
 				if (Config.useModels && renderer instanceof ObjModelItemRenderer && mc.thePlayer.getActivePotionEffect(Potion.moveSlowdown) != null) {
 					if (((ObjModelItemRenderer)renderer).isScoped() && ObjModelItemRenderer.isFullyScopedIn() && mc.gameSettings.thirdPersonView == 0) {
 						Collection<IAttachmentRenderer> attachments = ((ObjModelItemRenderer)renderer).getAttachments();
@@ -166,8 +168,8 @@ public class GuiWarOverlay extends Gui {
 						}
 					}
 					attachmentsEnded = true;
-					prevRenderer = renderer;
 				}
+				prevRenderer = renderer;
 			} catch (NullPointerException ex) {
 				if (!attachmentsEnded) {
 					WorldRenderHandler.resetFov();
