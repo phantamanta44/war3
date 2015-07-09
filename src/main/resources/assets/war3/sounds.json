@@ -204,5 +204,13 @@
         "name": "misc/kill"
       }
     ]
+  },
+  "bf.hud.tag": {
+    "category": "master",
+    "sounds": [
+      {
+        "name": "misc/tag"
+      }
+    ]
   }
 }

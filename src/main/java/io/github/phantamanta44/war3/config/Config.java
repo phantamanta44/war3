@@ -15,6 +15,7 @@ public class Config {
     public static boolean showHotbar;
     public static boolean altReticle;
     public static boolean varReticle;
+    public static String[] mentionRegex;
     public static boolean useModels;
     public static boolean doKickback;
     public static boolean beamMode;
@@ -30,6 +31,7 @@ public class Config {
         showHotbar = config.getBoolean("renderHotbar", CAT_HUD, false, "Show hotbar?");
         altReticle = config.getBoolean("altReticle", CAT_HUD, true, "Alternate reticles?");
         varReticle = config.getBoolean("varReticle", CAT_HUD, true, "Variable-size reticles?");
+        mentionRegex = config.getStringList("mentionFilters", CAT_HUD, new String[] { "^(?!.*(<|«).*%NAME.*(>|»)).*%NAME.*$" }, "Mention regex filters");
         useModels = config.getBoolean("renderModels", CAT_VISUAL, true, "Render models?");
         doKickback = config.getBoolean("doKickback", CAT_GAME, false, "Camera recoil?");
         beamMode = config.getBoolean("beamMode", CAT_EXTRA, false, "Bass cannon?");

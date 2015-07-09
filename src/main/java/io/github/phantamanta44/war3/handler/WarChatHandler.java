@@ -3,8 +3,10 @@ package io.github.phantamanta44.war3.handler;
 import io.github.phantamanta44.war3.SoundType;
 import io.github.phantamanta44.war3.War3;
 import io.github.phantamanta44.war3.War3.Team;
+import io.github.phantamanta44.war3.config.Config;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.Gui;
+import net.minecraft.util.ChatStyle;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.client.event.ClientChatReceivedEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -51,19 +53,17 @@ public class WarChatHandler {
 				processCTFMsg(CtfMsg.CAPTURE, Team.RED, msg);
 		}
 		
-		/*
-		
 		// Kill-get parsing
 		if (msg.contains("§7 killed")) {
-			mc.theWorld.playSoundAtEntity(mc.thePlayer, SoundType.KILLNOTIFICATION.getLoc(), 1.0F, 1.0F);
-			mc.ingameGUI.registerOnKillfeed(msg.replaceAll("§.", ""), true);
+			SoundType.playSound(mc, SoundType.KILLNOTIFICATION);
+			//mc.ingameGUI.registerOnKillfeed(msg.replaceAll("§.", ""), true);
 		}
 		
+		/*
 		// Death parsing
-		if (msg.contains("§cKilled by")) {
+		if (msg.contains("§cKilled by"))
 			mc.ingameGUI.registerOnKillfeed(msg.replaceAll("§.", ""), false);
-		}
-		
+			
 		// Map parsing
 		if (msg.contains("§4CURRENT MAP:"))
         {
@@ -88,6 +88,15 @@ public class WarChatHandler {
 		
 		*/
 		
+		// Mentions
+		for (String s : Config.mentionRegex) {
+			String rx = s.replaceAll("%NAME", mc.getSession().getUsername());
+			if (msg.matches(rx)) {
+				event.message = event.message.setChatStyle(new ChatStyle().setItalic(true));
+				SoundType.playSound(mc, SoundType.CHATTAG);
+			}
+		}
+		
 	}
 	
 	@SuppressWarnings("incomplete-switch")
@@ -96,13 +105,13 @@ public class WarChatHandler {
 		Minecraft mc = Minecraft.getMinecraft();
 		if (War3.getTeam(mc) == Team.RED) {
 			if (status == CtfMsg.DROP)
-				mc.theWorld.playSoundAtEntity(mc.thePlayer, SoundType.FLAGDROPRED.getLoc(), 1.0F, 1.0F);
+				SoundType.playSound(mc, SoundType.FLAGDROPRED);
 			if (War3.getTeam(mc) == team) {
 				switch (status) {
 				case PICKUP:
 					break;
 				case CAPTURE:
-					mc.theWorld.playSoundAtEntity(mc.thePlayer, SoundType.ENEMYFLAGCAPRED.getLoc(), 1.0F, 1.0F);
+					SoundType.playSound(mc, SoundType.ENEMYFLAGCAPRED);
 					break;
 				}
 			}
@@ -111,9 +120,9 @@ public class WarChatHandler {
 				case PICKUP:
 					break;
 				case CAPTURE:
-					mc.theWorld.playSoundAtEntity(mc.thePlayer, SoundType.FLAGCAPRED.getLoc(), 1.0F, 1.0F);
+					SoundType.playSound(mc, SoundType.FLAGCAPRED);
 					if (msg.contains(mc.getSession().getUsername())) {
-						mc.theWorld.playSoundAtEntity(mc.thePlayer, SoundType.UINOTIFICATION.getLoc(), 1.0F, 1.0F);
+						SoundType.playSound(mc, SoundType.UINOTIFICATION);
 						//mc.ingameGUI.kills.registerRaw("Flag Captured", 50);
 					}
 					break;
@@ -123,12 +132,12 @@ public class WarChatHandler {
 			
 		if (War3.getTeam(mc) == Team.BLUE) {
 			if (status == CtfMsg.DROP) {
-				mc.theWorld.playSoundAtEntity(mc.thePlayer, SoundType.FLAGDROPBLUE.getLoc(), 1.0F, 1.0F);
+				SoundType.playSound(mc, SoundType.FLAGDROPBLUE);
 			}
 			if (War3.getTeam(mc) == team) {
 				switch (status) {
 				case PICKUP:
-					mc.theWorld.playSoundAtEntity(mc.thePlayer, SoundType.ENEMYFLAGCAPBLUE.getLoc(), 1.0F, 1.0F);
+					SoundType.playSound(mc, SoundType.ENEMYFLAGCAPBLUE);
 					break;
 				case CAPTURE:
 					break;
@@ -139,9 +148,9 @@ public class WarChatHandler {
 				case PICKUP:
 					break;
 				case CAPTURE:
-					mc.theWorld.playSoundAtEntity(mc.thePlayer, SoundType.FLAGCAPBLUE.getLoc(), 1.0F, 1.0F);
+					SoundType.playSound(mc, SoundType.FLAGCAPBLUE);
 					if (msg.contains(mc.getSession().getUsername())) {
-						mc.theWorld.playSoundAtEntity(mc.thePlayer, SoundType.UINOTIFICATION.getLoc(), 1.0F, 1.0F);
+						SoundType.playSound(mc, SoundType.UINOTIFICATION);
 						//mc.ingameGUI.kills.registerRaw("Flag Captured", 50);
 					}
 					break;

@@ -10,6 +10,7 @@ import net.minecraft.client.audio.ISound;
 import net.minecraftforge.client.event.sound.PlaySoundEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.eventhandler.Event.Result;
 
 public class SoundInterceptor {
 	
@@ -18,13 +19,14 @@ public class SoundInterceptor {
 		Minecraft mc = Minecraft.getMinecraft();
 		final String path = event.sound.getSoundLocation().getResourcePath();
 		if (path.equals("ambient.cave.cave")) {
+			event.result = null;
 			Team team = War3.cachedTeam;
 			if (team == Team.RED)
-				mc.theWorld.playSoundAtEntity(mc.thePlayer, SoundType.RESPAWNRED.getLoc(), 1.0F, 1.0F);
+				SoundType.playSound(mc, SoundType.RESPAWNRED);
 			else if (team == Team.BLUE)
-				mc.theWorld.playSoundAtEntity(mc.thePlayer, SoundType.RESPAWNBLUE.getLoc(), 1.0F, 1.0F);
+				SoundType.playSound(mc, SoundType.RESPAWNBLUE);
 			else
-				mc.theWorld.playSoundAtEntity(mc.thePlayer, SoundType.RESPAWNRED.getLoc(), 1.0F, 1.0F);
+				SoundType.playSound(mc, SoundType.RESPAWNRED);
 		}
 		if (event.sound.getPitch() == 2.0F) {
 			if (isNearPlayer(event.sound, mc, 0.5F))
