@@ -42,14 +42,14 @@ public class BallisticScope implements IScopeAttachment {
 		WorldRenderHandler.setFovMultiplier(0.08F);
 		GL11.glDisable(GL11.GL_BLEND);
 		mc.getTextureManager().bindTexture(orthoTex);
-        WorldRenderer wr = tess.getWorldRenderer();
-        wr.startDrawingQuads();
-        wr.addVertexWithUV(0.0D, (double)yBounds, -90.0D, 0.0D, 1.0D);
-        wr.addVertexWithUV((double)xBounds, (double)yBounds, -90.0D, 1.0D, 1.0D);
-        wr.addVertexWithUV((double)xBounds, 0.0D, -90.0D, 1.0D, 0.0D);
-        wr.addVertexWithUV(0.0D, 0.0D, -90.0D, 0.0D, 0.0D);
-        tess.draw();
-        GL11.glEnable(GL11.GL_BLEND);
+		WorldRenderer wr = tess.getWorldRenderer();
+		wr.startDrawingQuads();
+		wr.addVertexWithUV(0.0D, (double)yBounds, -90.0D, 0.0D, 1.0D);
+		wr.addVertexWithUV((double)xBounds, (double)yBounds, -90.0D, 1.0D, 1.0D);
+		wr.addVertexWithUV((double)xBounds, 0.0D, -90.0D, 1.0D, 0.0D);
+		wr.addVertexWithUV(0.0D, 0.0D, -90.0D, 0.0D, 0.0D);
+		tess.draw();
+		GL11.glEnable(GL11.GL_BLEND);
 	}
 	
 	@Override

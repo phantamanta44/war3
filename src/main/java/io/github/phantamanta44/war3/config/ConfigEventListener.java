@@ -6,10 +6,10 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class ConfigEventListener {
 	
-    @SubscribeEvent(priority = EventPriority.NORMAL)
-    public void onConfigChanged(OnConfigChangedEvent event) {
-        if (event.modID.equals("war3"))
-            Config.syncConfig();
-    }
-    
+	@SubscribeEvent(priority = EventPriority.NORMAL)
+	public void onConfigChanged(OnConfigChangedEvent event) {
+		if (event.modID.equals("war3"))
+			Config.syncConfig();
+	}
+	
 }

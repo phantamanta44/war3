@@ -66,25 +66,25 @@ public class WarChatHandler {
 			
 		// Map parsing
 		if (msg.contains("§4CURRENT MAP:"))
-        {
-            String cmap;
-            String cgm;
-            cmap = msg.replaceAll("CURRENT MAP:\\s", "").replaceAll("_.+", "").replaceAll("\\sGAMEMODE:\\s.+", "").trim();
-            cgm = msg.replaceAll(".+GAMEMODE:\\s", "").trim();
-            cmap = cmap.substring(0, 1).toUpperCase() + cmap.substring(1);
-            cgm = cgm.substring(0, 1).toUpperCase() + cgm.substring(1);
-            mc.ingameGUI.setCurrentMapAndGamemode(cmap, cgm);
-        }
-        if (msg.contains("§4NEXT MAP:"))
-        {
-            String cmap;
-            String cgm;
-            cmap = msg.replaceAll("NEXT MAP:\\s", "").replaceAll("_.+", "").replaceAll("\\sGAMEMODE:\\s.+", "").trim();
-            cgm = msg.replaceAll(".+GAMEMODE:\\s", "").trim();
-            cmap = cmap.substring(0, 1).toUpperCase() + cmap.substring(1);
-            cgm = cgm.substring(0, 1).toUpperCase() + cgm.substring(1);
-            mc.ingameGUI.setCurrentMapAndGamemode(cmap, cgm);
-        }
+		{
+			String cmap;
+			String cgm;
+			cmap = msg.replaceAll("CURRENT MAP:\\s", "").replaceAll("_.+", "").replaceAll("\\sGAMEMODE:\\s.+", "").trim();
+			cgm = msg.replaceAll(".+GAMEMODE:\\s", "").trim();
+			cmap = cmap.substring(0, 1).toUpperCase() + cmap.substring(1);
+			cgm = cgm.substring(0, 1).toUpperCase() + cgm.substring(1);
+			mc.ingameGUI.setCurrentMapAndGamemode(cmap, cgm);
+		}
+		if (msg.contains("§4NEXT MAP:"))
+		{
+			String cmap;
+			String cgm;
+			cmap = msg.replaceAll("NEXT MAP:\\s", "").replaceAll("_.+", "").replaceAll("\\sGAMEMODE:\\s.+", "").trim();
+			cgm = msg.replaceAll(".+GAMEMODE:\\s", "").trim();
+			cmap = cmap.substring(0, 1).toUpperCase() + cmap.substring(1);
+			cgm = cgm.substring(0, 1).toUpperCase() + cgm.substring(1);
+			mc.ingameGUI.setCurrentMapAndGamemode(cmap, cgm);
+		}
 		
 		*/
 		
